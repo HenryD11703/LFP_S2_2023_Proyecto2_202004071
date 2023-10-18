@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from Lexico.Analizador import Analizador
 
 
 def escribir():
@@ -8,6 +9,13 @@ def escribir():
     # TODO: Hacer aca la impresion del codigo procesado
     cuadro_texto_pequeño.insert("1.0", "Hola")  # *Agregar el contenido aca 
     cuadro_texto_pequeño.config(state="disabled") 
+    
+def analizar():
+    texto = cuadro_texto_grande.get("1.0","end")
+    analizador = Analizador(texto)
+    analizador.analizar()
+    analizador.imprimirTokens()
+    analizador.imprimirErrores()
 
 ventana = tk.Tk()
 ventana.title("Interfaz con Tkinter")
@@ -22,7 +30,7 @@ titulo_label.grid(row=0, column=0)
 abrir_boton = tk.Button(navbar_frame, text="Abrir", padx=60, command=escribir)
 abrir_boton.grid(row=0, column=1)
 
-analizar_boton = tk.Button(navbar_frame, text="Analizar", padx=60)
+analizar_boton = tk.Button(navbar_frame, text="Analizar", padx=60, command=analizar)
 analizar_boton.grid(row=0, column=2)
 
 opcion = tk.StringVar()
