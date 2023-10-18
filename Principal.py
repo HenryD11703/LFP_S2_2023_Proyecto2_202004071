@@ -6,15 +6,13 @@ def escribir():
     cuadro_texto_pequeño.config(state="normal")  
     cuadro_texto_pequeño.delete("1.0", "end")   
     # TODO: Hacer aca la impresion del codigo procesado
-    cuadro_texto_pequeño.insert("1.0", "Hola")  #Agregar el contenido aca 
+    cuadro_texto_pequeño.insert("1.0", "Hola")  # *Agregar el contenido aca 
     cuadro_texto_pequeño.config(state="disabled") 
 
-# Crear la ventana principal
 ventana = tk.Tk()
 ventana.title("Interfaz con Tkinter")
 ventana.geometry("1000x900")
 
-# Crear el navbar
 navbar_frame = tk.Frame(ventana, bg="lightgray")
 navbar_frame.pack(fill="x")
 
@@ -38,5 +36,4 @@ cuadro_texto_pequeño = tk.Text(ventana, width=125, height=25, borderwidth=2, re
 cuadro_texto_pequeño.pack(pady=10, padx=10)
 cuadro_texto_pequeño.config(state="disabled")
 
-# Iniciar la aplicación
 ventana.mainloop()
