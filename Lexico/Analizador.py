@@ -106,7 +106,7 @@ class Analizador():
                 if caracter.isalpha():
                     lexema+=caracter
                     estado="B"
-                elif ascii==32 or ascii==9 or ascii==10 or self.SimboloValido(ascii):#ya que si lo que viene es un espacio o salto de linea significa que se termino el string ó como es una palabra reservada tambien puede haber algun simbolo valido
+                elif ascii==32 or ascii==9 or ascii==10 or self.SimboloValido(ascii) or ascii==35:#ya que si lo que viene es un espacio o salto de linea significa que se termino el string ó como es una palabra reservada tambien puede haber algun simbolo valido
                     self.tokens.append(Token('Texto',lexema,fila,columna-len(lexema)))# Y se acepta el texto
                     lexema=""
                     estado="A"
@@ -175,7 +175,7 @@ class Analizador():
                 elif ascii==46:
                     lexema+=caracter
                     estado="J"
-                elif self.SimboloValido(ascii) or ascii== 10 or ascii==9 or ascii==32:
+                elif self.SimboloValido(ascii) or ascii== 10 or ascii==9 or ascii==32 or ascii==35:
                     self.tokens.append(Token('Entero',lexema,fila,columna-len(lexema)))
                     lexema=""
                     estado="A"
@@ -250,7 +250,7 @@ class Analizador():
                     lexema+=caracter
                     estado="G"
                 elif ascii==10:
-                    self.tokens.append(Token('Comentario',lexema,fila,columna-len(lexema)))
+                    #self.tokens.append(Token('Comentario',lexema,fila,columna-len(lexema)))
                     lexema=""
                     estado="A"
                     if ascii==35:
@@ -375,7 +375,7 @@ class Analizador():
             
             #estado K que acepta las cadenas de comentarios multilinea
             elif estado=="K":
-                self.tokens.append(Token('Comentario Multilinea',lexema,fila,columna-len(lexema)))
+                #self.tokens.append(Token('Comentario Multilinea',lexema,fila,columna-len(lexema)))
                 lexema=""
                 estado="A"
                 if ascii==35:
