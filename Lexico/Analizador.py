@@ -42,6 +42,9 @@ class Analizador():
         self.texto = texto
         self.tokens = []
         self.errores = []
+    
+    def getTokens(self):
+        return self.tokens
         
     def imprimirTokens(self):
         print("Tokens Reconocidos: ")
