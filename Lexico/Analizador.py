@@ -56,7 +56,7 @@ class Analizador():
     def SimboloValido(self,ascii):
         if ascii == 61 or ascii == 91 or ascii == 93 or ascii ==44 or ascii == 123 or ascii == 125 or ascii == 59 or ascii == 40 or ascii == 41 or ascii == 46:
             return True
-        return False
+        return False 
     
     def analizar(self):
         #Condiciones Iniciales
@@ -104,10 +104,35 @@ class Analizador():
                 if caracter.isalpha():
                     lexema+=caracter
                     estado="B"
-                elif ascii==32 or ascii==9 or ascii==10 or self.SimboloValido(caracter):#ya que si lo que viene es un espacio o salto de linea significa que se termino el string ó como es una palabra reservada tambien puede haber algun simbolo valido
+                elif ascii==32 or ascii==9 or ascii==10 or self.SimboloValido(ascii):#ya que si lo que viene es un espacio o salto de linea significa que se termino el string ó como es una palabra reservada tambien puede haber algun simbolo valido
                     self.tokens.append(Token('Texto',lexema,fila,columna-len(lexema)))# Y se acepta el texto
                     lexema=""
                     estado="A"
+                    if ascii==35:
+                        lexema+=caracter
+                        estado="G"
+                    elif caracter.isalpha():
+                        lexema+=caracter
+                        estado="B"
+                    elif caracter.isdigit():
+                        lexema+=caracter
+                        estado="E"
+                    elif ascii==34:
+                        lexema+=caracter
+                        estado="C"
+                    elif self.SimboloValido(ascii):
+                        lexema+=caracter
+                        estado="F"
+                    elif ascii==43 or ascii==45:
+                        lexema+=caracter
+                        estado="D"
+                    elif ascii==39:
+                        lexema+=caracter
+                        estado="H1"
+                    else:
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
+                        lexema=""#reset
+                        estado="A"#Volver a empezar con el siguiente lexema
                 else:
                     self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema=""
@@ -141,15 +166,40 @@ class Analizador():
             elif estado=="E":
                 #este estado puede aceptar en la entrada
                 if caracter.isdigit():
-                    lexema+=caracter
+                    lexema+=str(caracter)
                     estado="E"
                 elif ascii==46:
                     lexema+=caracter
                     estado="J"
-                elif self.SimboloValido(ascii):
+                elif self.SimboloValido(ascii) or ascii== 10 or ascii==9 or ascii==32:
                     self.tokens.append(Token('Entero',lexema,fila,columna-len(lexema)))
                     lexema=""
                     estado="A"
+                    if ascii==35:
+                        lexema+=caracter
+                        estado="G"
+                    elif caracter.isalpha():
+                        lexema+=caracter
+                        estado="B"
+                    elif caracter.isdigit():
+                        lexema+=caracter
+                        estado="E"
+                    elif ascii==34:
+                        lexema+=caracter
+                        estado="C"
+                    elif self.SimboloValido(ascii):
+                        lexema+=caracter
+                        estado="F"
+                    elif ascii==43 or ascii==45:
+                        lexema+=caracter
+                        estado="D"
+                    elif ascii==39:
+                        lexema+=caracter
+                        estado="H1"
+                    else:
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
+                        lexema=""#reset
+                        estado="A"#Volver a empezar con el siguiente lexema
                 else:
                     self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
@@ -160,13 +210,66 @@ class Analizador():
                 self.tokens.append(Token('Simbolo',lexema,fila,columna-len(lexema)))
                 lexema=""
                 estado="A"
+                if ascii==35:
+                        lexema+=caracter
+                        estado="G"
+                elif caracter.isalpha():
+                        lexema+=caracter
+                        estado="B"
+                elif caracter.isdigit():
+                        lexema+=caracter
+                        estado="E"
+                elif ascii==34:
+                        lexema+=caracter
+                        estado="C"
+                elif self.SimboloValido(ascii):
+                        lexema+=caracter
+                        estado="F"
+                elif ascii==43 or ascii==45:
+                        lexema+=caracter
+                        estado="D"
+                elif ascii==39:
+                        lexema+=caracter
+                        estado="H1"
+                else:
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
+                        lexema=""#reset
+                        estado="A"#Volver a empezar con el siguiente lexema
                 
             #Estado G (Simbolo # y luego cualquier cosa, el salto de linea lo termina y aceptarlo)
             elif estado=="G":
-                if ascii==10:
+                if ascii != 10:
+                    lexema+=caracter
+                    estado="G"
+                elif ascii==10:
                     self.tokens.append(Token('Comentario',lexema,fila,columna-len(lexema)))
                     lexema=""
                     estado="A"
+                    if ascii==35:
+                        lexema+=caracter
+                        estado="G"
+                    elif caracter.isalpha():
+                        lexema+=caracter
+                        estado="B"
+                    elif caracter.isdigit():
+                        lexema+=caracter
+                        estado="E"
+                    elif ascii==34:
+                        lexema+=caracter
+                        estado="C"
+                    elif self.SimboloValido(ascii):
+                        lexema+=caracter
+                        estado="F"
+                    elif ascii==43 or ascii==45:
+                        lexema+=caracter
+                        estado="D"
+                    elif ascii==39:
+                        lexema+=caracter
+                        estado="H1"
+                    else:
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
+                        lexema=""#reset
+                        estado="A"#Volver a empezar con el siguiente lexema
                     
             #Estados H que son para las comillas:
             elif estado=="H1":
@@ -219,12 +322,38 @@ class Analizador():
                 self.tokens.append(Token('String',lexema,fila,columna-len(lexema)))
                 lexema=""
                 estado="A"
+                if ascii==35:
+                        lexema+=caracter
+                        estado="G"
+                elif caracter.isalpha():
+                        lexema+=caracter
+                        estado="B"
+                elif caracter.isdigit():
+                        lexema+=caracter
+                        estado="E"
+                elif ascii==34:
+                        lexema+=caracter
+                        estado="C"
+                elif self.SimboloValido(ascii):
+                        lexema+=caracter
+                        estado="F"
+                elif ascii==43 or ascii==45:
+                        lexema+=caracter
+                        estado="D"
+                elif ascii==39:
+                        lexema+=caracter
+                        estado="H1"
+                else:
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
+                        lexema=""#reset
+                        estado="A"#Volver a empezar con el siguiente lexema
+                
                 
             #Estado J (El estado E pasa aca cuando hay un punto)
             elif estado=="J":
                 if caracter.isdigit():
-                    lexema+=caracter
-                    estado=="L"
+                    lexema+=str(caracter)
+                    estado="L"
                 else:
                     self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
@@ -237,17 +366,67 @@ class Analizador():
                 self.tokens.append(Token('Comentario Multilinea',lexema,fila,columna-len(lexema)))
                 lexema=""
                 estado="A"
+                if ascii==35:
+                        lexema+=caracter
+                        estado="G"
+                elif caracter.isalpha():
+                        lexema+=caracter
+                        estado="B"
+                elif caracter.isdigit():
+                        lexema+=caracter
+                        estado="E"
+                elif ascii==34:
+                        lexema+=caracter
+                        estado="C"
+                elif self.SimboloValido(ascii):
+                        lexema+=caracter
+                        estado="F"
+                elif ascii==43 or ascii==45:
+                        lexema+=caracter
+                        estado="D"
+                elif ascii==39:
+                        lexema+=caracter
+                        estado="H1"
+                else:
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
+                        lexema=""#reset
+                        estado="A"#Volver a empezar con el siguiente lexema
                 
             
             #Estado L acepta decimales
             elif estado =="L":
-                if caracter.isdigit(): #123.32,} etc...
+                if caracter.isdigit():
                     lexema+=caracter
                     estado="L"
-                elif self.SimboloValido(ascii):
+                elif self.SimboloValido(ascii)  or ascii== 10 or ascii==9 or ascii==32:
                     self.tokens.append(Token('Decimal',lexema,fila,columna-len(lexema)))
                     lexema=""
                     estado="A"
+                    if ascii==35:
+                        lexema+=caracter
+                        estado="G"
+                    elif caracter.isalpha():
+                            lexema+=caracter
+                            estado="B"
+                    elif caracter.isdigit():
+                            lexema+=caracter
+                            estado="E"
+                    elif ascii==34:
+                            lexema+=caracter
+                            estado="C"
+                    elif self.SimboloValido(ascii):
+                            lexema+=caracter
+                            estado="F"
+                    elif ascii==43 or ascii==45:
+                            lexema+=caracter
+                            estado="D"
+                    elif ascii==39:
+                            lexema+=caracter
+                            estado="H1"
+                    else:
+                            self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
+                            lexema=""#reset
+                            estado="A"#Volver a empezar con el siguiente lexema
                 else:
                     self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
