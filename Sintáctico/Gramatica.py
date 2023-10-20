@@ -162,7 +162,7 @@ class Sintactico():
     #<otroValor> ::=  coma <valor> <otroValor>
     #               | lambda
     #<otroRegistro> ::= <registro> <otroRegistro>
-    #                | lambda """
+    #                | lambda 
     
     def registros(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema =="Registros":
@@ -170,8 +170,16 @@ class Sintactico():
             if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "=":
                 self.tokens.pop(0)
                 if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "[":
+                    print(self.tokens[0].lexema)
                     self.tokens.pop(0)
-                    self.registro()#TODO: Seguir aca con otroregistro y corcheteC
+                    self.registro()
+                    self.otroregistro()
+                    print("Todo bien aca")
+                    if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "]":
+                        self.tokens.pop(0)
+                        print("se reconocio el registro")
+                    else:
+                       self.errores.append(Error('Se esperaba ]',self.tokens[0].columna, self.tokens[0].fila)) # 
                 else:
                     self.errores.append(Error('Se esperaban registros [',self.tokens[0].columna, self.tokens[0].fila))
             else: 
@@ -179,10 +187,43 @@ class Sintactico():
         else:
             self.errores.append(Error('No se encontraron los registros',self.tokens[0].columna, self.tokens[0].fila))
             
+  
+            
        
     def registro(self):
         if self.tokens[0].nombre =="Simbolo" and self.tokens[0].lexema=="{":
             self.tokens.pop(0)
-            self.valor() #TODO: Seguir aca con los valores dentro de registro
+            res = self.valor() 
+            if res is not None:
+                registro = []
+                registro.append(res.lexema)
+                self.otroValor(registro)
+                if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="}":
+                    print('si')
+                    self.tokens.pop(0)
+                    self.listaRegistros.append(registro)
+                else:
+                    self.errores.append(Error('La lista de registro no fue cerrada',self.tokens[0].columna, self.tokens[0].fila))           
         else: 
             self.errores.append(Error('Se esperaba al menos un registro',self.tokens[0].columna, self.tokens[0].fila))
+            
+    def valor(self):
+        if self.tokens[0].nombre == "String" or self.tokens[0].nombre == "Entero" or self.tokens[0].nombre == "Decimal":
+            campo = self.tokens.pop(0)
+            return campo
+        else:
+            self.errores.append(Error('Deberia haber un string o un numero',self.tokens[0].columna, self.tokens[0].fila))
+            return None
+    
+    def otroValor(self,registro):
+        if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema == ",":
+            self.tokens.pop(0)
+            res = self.valor()
+            if res is not None:
+                registro.append(res.lexema)
+                self.otroValor(registro)    
+    
+    def otroregistro(self):
+        if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema=="{":
+            self.registro()
+            self.otroregistro()
