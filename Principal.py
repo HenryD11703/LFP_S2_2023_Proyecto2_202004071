@@ -25,8 +25,11 @@ def analizar():
     analizador.imprimirTokens()
     analizador.imprimirErrores()
     a = analizador.getTokens();
+    
+    
     s = Sintactico(a)
     s.analizar()
+    s.ImprimirErrores()
 
 ventana = tk.Tk()
 ventana.title("Interfaz con Tkinter")
