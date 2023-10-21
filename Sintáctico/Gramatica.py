@@ -233,26 +233,33 @@ class Sintactico():
             self.otroregistro()
             
     def funciones(self):
-        self.funcion()
-        self.otrafuncion()
+        if self.tokens[0].nombre == "Texto":
+            self.funcion()
+            self.otrafuncion()
+        else:
+            self.errores.append(Error('No hay funciones',self.tokens[0].columna, self.tokens[0].fila))
+            
         
     def funcion(self):
-        self.imprimir()
-        self.imprimirln()
-        self.conteo()
-        self.promedio()
-        self.contarsi()
-        self.datos()
-        self.sumar()
-        self.fmax()
-        self.fmin()
-        self.exportarReporte()
+        if self.tokens[0].lexema =="imprimir" or self.tokens[0].lexema =="imprimirln" or self.tokens[0].lexema == "conteo" or self.tokens[0].lexema =="promedio" or self.tokens[0].lexema =="contarsi" or self.tokens[0].lexema =="datos" or self.tokens[0].lexema =="sumar" or self.tokens[0].lexema =="stock" or self.tokens[0].lexema =="max" or self.tokens[0].lexema =="min" or self.tokens[0].lexema =="exportarReporte":
+            self.imprimir()
+            self.imprimirln()
+            self.conteo()
+            self.promedio()
+            self.contarsi()
+            self.datos()
+            self.sumar()
+            self.fmax()
+            self.fmin()
+            self.exportarReporte()
+        else:
+             self.errores.append(Error('No hay funciones',self.tokens[0].columna, self.tokens[0].fila))
     
     def otrafuncion(self):
         if self.tokens[0].nombre !="Fin":
             self.funcion()
             self.otrafuncion()
-        elif self.tokens[0].nombre =="Fin":
+        else:
             print("Analisis completo xd")
             
     def imprimir(self):
@@ -261,12 +268,12 @@ class Sintactico():
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
-                    print(self.tokens[0].lexema)
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                             self.tokens.pop(0)
+                            print("Imprimir correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
                     else:
@@ -291,6 +298,7 @@ class Sintactico():
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                             self.tokens.pop(0)
+                            print("ImprimirLn correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
                     else:
@@ -312,6 +320,7 @@ class Sintactico():
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                         self.tokens.pop(0)
+                        print("Conteo correcto")
                     else:
                         self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
                 else:
@@ -332,6 +341,7 @@ class Sintactico():
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                             self.tokens.pop(0)
+                            print("Promedio correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
                     else:
@@ -357,6 +367,7 @@ class Sintactico():
                                 self.tokens.pop(0)
                                 if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                                     self.tokens.pop(0)
+                                    print("Contar correcto")
                             else:
                                  self.errores.append(Error('Se esperaba cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
                         else:
@@ -378,6 +389,7 @@ class Sintactico():
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                         self.tokens.pop(0)
+                        print("Datos correcto")
                     else:
                         self.errores.append(Error('Se esperaba un ;a',self.tokens[0].columna, self.tokens[0].fila)) 
                 else:
@@ -397,6 +409,7 @@ class Sintactico():
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                             self.tokens.pop(0)
+                            print("Sumar correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;b',self.tokens[0].columna, self.tokens[0].fila)) 
                     else:
@@ -418,6 +431,7 @@ class Sintactico():
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                             self.tokens.pop(0)
+                            print("max correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;c',self.tokens[0].columna, self.tokens[0].fila)) 
                     else:
@@ -439,6 +453,7 @@ class Sintactico():
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                             self.tokens.pop(0)
+                            print("min correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;d',self.tokens[0].columna, self.tokens[0].fila)) 
                     else:
@@ -460,6 +475,7 @@ class Sintactico():
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                             self.tokens.pop(0)
+                            print("Exportar correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;e',self.tokens[0].columna, self.tokens[0].fila)) 
                     else:
