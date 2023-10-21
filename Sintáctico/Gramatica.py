@@ -49,7 +49,8 @@ Terminales: Claves, igual, corcheteA, string, coma, corcheteC
            
 No Terminales:
 <Inicio> <Claves> <ListaStrings> <Registros> <registro> <valor> <otroValor> <otroRegistro> <Funciones>
-<funcion> <otrafuncion>
+<funcion> <otrafuncion> <imprimir> <imprimirln> <conteo> <promedio> <contarsi>
+<datos> <sumar> <max> <min> <exportarReporte>
 
 Inicio:<Inicio>
 Producciones:  
@@ -71,18 +72,30 @@ Producciones:
                     | lambda
     
     <Funciones> ::= <funcion> <otrafuncion>
-    <funcion>:: = imprimir parentesisA string parentesisC puntocoma                    
-                 |imprimirln parentesisA string parentesisC puntocoma  
-                 |conteo parentesisA parentesisC puntocoma 
-                 |promedio parentesisA string parentesisC puntocoma
-                 |contarsi parentesisA string coma entero parentesisC puntocoma
-                 |datos parentesisA parentesisC puntocoma
-                 |sumar parentesisA string parentesisC puntocoma
-                 |max parentesisA string parentesisC puntocoma
-                 |min parentesisA string parentesisC puntocoma
-                 |exporterReporte parentesisA string parentesisC puntocoma
+    <funcion>:: = <imprimir>                   
+                 |<imprimirln>  
+                 |<conteo> 
+                 |<promedio>
+                 |<contarsi>
+                 |<datos>
+                 |<sumar>
+                 |<max>
+                 |<min>
+                 |<exportarReporte>
+
+    <imprimir> ::= imprimir parentesisA string parentesisC puntocoma 
+    <imprimirln> ::= imprimirln parentesisA string parentesisC puntocoma
+    <conteo> ::= conteo parentesisA parentesisC puntocoma
+    <promedio> ::= promedio parentesisA string parentesisC puntocoma
+    <contarsi> ::= contarsi parentesisA string coma entero parentesisC puntocoma
+    <datos> ::= datos parentesisA parentesisC puntocoma
+    <sumar> ::= sumar parentesisA string parentesisC puntocoma
+    <max> ::= max parentesisA string parentesisC puntocoma 
+    <min> ::= min parentesisA string parentesisC puntocoma
+    <exportarReporte> ::= exporterReporte parentesisA string parentesisC puntocoma
+
     <otrafuncion> ::= <funcion><otrafuncion>
-                    | lambda 
+                    | lambda
  
 '''
 from Sintáctico.SToken import Token
@@ -110,29 +123,24 @@ class Sintactico():
     def inicio(self):
         self.claves()
         self.registros();
-        #self.funciones();
+        self.funciones();
     
     #<Claves> ::= Claves igual corcheteA string <ListaStrings> corcheteC
     def claves(self):
         if self.tokens[0].nombre == 'Texto' and self.tokens[0].lexema =="Claves":
-            #print("Clave encontrada")
             self.tokens.pop(0)
             if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "=":
-                #print("Simbolo encontrado")
                 self.tokens.pop(0)
                 if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "[":
-                    #print("Corchete abierto")
                     self.tokens.pop(0)
                     if self.tokens[0].nombre == 'String':
-                        #print("clave encontrada")
-                        clave = self.tokens.pop(0)
-                        self.listaClaves.append(clave.lexema)
+                        self.tokens.pop(0)
                         self.listaStrings()
                         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema=="]":
                             self.tokens.pop(0)
-                            print("Claves completas")
                         else:
-                            self.errores.append(Error('La lista de claves no ha sido cerrada',self.tokens[0].columna, self.tokens[0].fila))                                                   
+                            self.errores.append(Error('La lista de claves no ha sido cerrada',self.tokens[0].columna, self.tokens[0].fila))
+                                                                               
                     else:
                         self.errores.append(Error('Se requiere al menos un elemento en la lista',self.tokens[0].columna, self.tokens[0].fila))
                 else:
@@ -141,6 +149,7 @@ class Sintactico():
                 self.errores.append(Error('Falto un signo =',self.tokens[0].columna, self.tokens[0].fila))
         else:
             self.errores.append(Error('No se encontraron las claves',self.tokens[0].columna, self.tokens[0].fila))
+            
      
     #<ListaStrings> ::= coma string <ListaStrings>
      #               | lambda       
@@ -148,8 +157,7 @@ class Sintactico():
         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema == ",":
             self.tokens.pop(0)
             if self.tokens[0].nombre == 'String':
-                clave = self.tokens.pop(0)
-                self.listaClaves.append(clave.lexema)
+                self.tokens.pop(0)
                 self.listaStrings()
             else:
                 self.errores.append(Error('Falto un string despues de la coma ,',self.tokens[0].columna, self.tokens[0].fila))
@@ -170,14 +178,11 @@ class Sintactico():
             if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "=":
                 self.tokens.pop(0)
                 if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "[":
-                    print(self.tokens[0].lexema)
                     self.tokens.pop(0)
                     self.registro()
                     self.otroregistro()
-                    print("Todo bien aca")
                     if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "]":
                         self.tokens.pop(0)
-                        print("se reconocio el registro")
                     else:
                        self.errores.append(Error('Se esperaba ]',self.tokens[0].columna, self.tokens[0].fila)) # 
                 else:
@@ -199,7 +204,6 @@ class Sintactico():
                 registro.append(res.lexema)
                 self.otroValor(registro)
                 if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="}":
-                    print('si')
                     self.tokens.pop(0)
                     self.listaRegistros.append(registro)
                 else:
@@ -227,3 +231,242 @@ class Sintactico():
         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema=="{":
             self.registro()
             self.otroregistro()
+            
+    def funciones(self):
+        self.funcion()
+        self.otrafuncion()
+        
+    def funcion(self):
+        self.imprimir()
+        self.imprimirln()
+        self.conteo()
+        self.promedio()
+        self.contarsi()
+        self.datos()
+        self.sumar()
+        self.fmax()
+        self.fmin()
+        self.exportarReporte()
+    
+    def otrafuncion(self):
+        if self.tokens[0].nombre !="Fin":
+            self.funcion()
+            self.otrafuncion()
+        elif self.tokens[0].nombre =="Fin":
+            print("Analisis completo xd")
+            
+    def imprimir(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="imprimir":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="String":
+                    print(self.tokens[0].lexema)
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.tokens.pop(0)
+                        if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.tokens.pop(0)
+                        else:
+                            self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
+                    else:
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+        else:
+            pass
+              
+        
+            
+    def imprimirln(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="imprimirln":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="String":
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.tokens.pop(0)
+                        if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.tokens.pop(0)
+                        else:
+                            self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
+                    else:
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+        else:
+            pass  
+        
+            
+    def conteo(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="conteo":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                        self.tokens.pop(0)
+                    else:
+                        self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+        else:
+            pass
+            
+    def promedio(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="promedio":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="String":
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.tokens.pop(0)
+                        if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.tokens.pop(0)
+                        else:
+                            self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
+                    else:
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+
+    
+    def contarsi(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="contarsi":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="String":
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==",":
+                        self.tokens.pop(0)
+                        if self.tokens[0].nombre=="Entero":
+                            self.tokens.pop(0)
+                            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                                self.tokens.pop(0)
+                                if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                                    self.tokens.pop(0)
+                            else:
+                                 self.errores.append(Error('Se esperaba cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                        else:
+                            self.errores.append(Error('Se esperaba un numero entero',self.tokens[0].columna, self.tokens[0].fila)) 
+                    else:
+                        self.errores.append(Error('Se esperaba una separacion por coma',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+
+    
+    def datos(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="datos":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                        self.tokens.pop(0)
+                    else:
+                        self.errores.append(Error('Se esperaba un ;a',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+        
+    
+    def sumar(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="sumar":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="String":
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.tokens.pop(0)
+                        if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.tokens.pop(0)
+                        else:
+                            self.errores.append(Error('Se esperaba un ;b',self.tokens[0].columna, self.tokens[0].fila)) 
+                    else:
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+        
+        
+    def fmax(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="max":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="String":
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.tokens.pop(0)
+                        if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.tokens.pop(0)
+                        else:
+                            self.errores.append(Error('Se esperaba un ;c',self.tokens[0].columna, self.tokens[0].fila)) 
+                    else:
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+        
+    
+    def fmin(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="min":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="String":
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.tokens.pop(0)
+                        if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.tokens.pop(0)
+                        else:
+                            self.errores.append(Error('Se esperaba un ;d',self.tokens[0].columna, self.tokens[0].fila)) 
+                    else:
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+        
+        
+    def exportarReporte(self):
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="exportarReporte":
+            self.tokens.pop(0)
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.tokens.pop(0)
+                if self.tokens[0].nombre=="String":
+                    self.tokens.pop(0)
+                    if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.tokens.pop(0)
+                        if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.tokens.pop(0)
+                        else:
+                            self.errores.append(Error('Se esperaba un ;e',self.tokens[0].columna, self.tokens[0].fila)) 
+                    else:
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                else:
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+            else:
+               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+      
+    

@@ -19,7 +19,7 @@ imprimir("Abarroteria");
 imprimirln("Reporte de");
 imprimirln("Abarroteria");
 
-conteo()
+conteo();
 
 promedio("stock");
 
@@ -27,10 +27,10 @@ contarsi("stock",0);
 
 datos();
 
-sumar("stock")
+sumar("stock");
 
 max("precio_venta");
 
 min("precio_compra");
 
-exportarReporte("Reporte HTML de abarrotería")
+exportarReporte("Reporte HTML de abarrotería");
