@@ -100,6 +100,7 @@ Producciones:
 '''
 from Sintáctico.SToken import Token
 from Sintáctico.SError import Error
+from graphviz import Digraph
 
 class Sintactico():
     def __init__(self,tokens) -> None:
@@ -107,7 +108,10 @@ class Sintactico():
         self.listaClaves = []
         self.listaRegistros = []
         self.errores = []
+        self.i=0
+        self.dot = Digraph()
         
+
         tokenN = Token('Fin','Fin',0,0)
         self.tokens.append(tokenN)
     
@@ -117,32 +121,58 @@ class Sintactico():
             print(f'{error}')
     
     def analizar(self):
+        self.dot.node('A','Inicio')
         self.inicio()
+        
+        
     
     #<Inicio> ::= <Claves> <Registros> <Funciones>
     def inicio(self):
+        self.dot.node('B','Claves')
+        self.dot.node('C','Registros')
+        self.dot.node('D','Funciones')
+        self.dot.edge('A','B')
         self.claves()
+        self.dot.edge('A','C')
         self.registros();
+        self.dot.edge('A','D')
         self.funciones();
     
     #<Claves> ::= Claves igual corcheteA string <ListaStrings> corcheteC
     def claves(self):
         if self.tokens[0].nombre == 'Texto' and self.tokens[0].lexema =="Claves":
+            self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+            self.dot.edge('B',f'N{self.i}')
+            self.i+=1
             self.tokens.pop(0)
             if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "=":
+                self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+                self.dot.edge('B',f'N{self.i}')
+                self.i+=1
                 self.tokens.pop(0)
                 if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "[":
+                    self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+                    self.dot.edge('B',f'N{self.i}')
+                    self.i+=1
                     self.tokens.pop(0)
                     if self.tokens[0].nombre == 'String':
+                        self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+                        self.dot.edge('B',f'N{self.i}')
+                        self.i+=1
+                        self.dot.node(f'Ls',f'Lista Strings')
                         self.tokens.pop(0)
+                        self.dot.edge('B','Ls')
                         self.listaStrings()
                         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema=="]":
+                            self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+                            self.dot.edge('B',f'N{self.i}')
+                            self.i+=1
                             self.tokens.pop(0)
                         else:
                             self.errores.append(Error('La lista de claves no ha sido cerrada',self.tokens[0].columna, self.tokens[0].fila))
                                                                                
                     else:
-                        self.errores.append(Error('Se requiere al menos un elemento en la lista',self.tokens[0].columna, self.tokens[0].fila))
+                        self.errores.append(Error('Se requiere al menos un elemento "String" en la lista',self.tokens[0].columna, self.tokens[0].fila))
                 else:
                     self.errores.append(Error('Falta la apertura de corchete',self.tokens[0].columna, self.tokens[0].fila))
             else:
@@ -155,12 +185,20 @@ class Sintactico():
      #               | lambda       
     def listaStrings(self):
         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema == ",":
+            self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+            self.dot.edge('Ls',f'N{self.i}')
+            self.i+=1
             self.tokens.pop(0)
             if self.tokens[0].nombre == 'String':
+                self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+                self.dot.edge('Ls',f'N{self.i}')
+                self.i+=1
                 self.tokens.pop(0)
                 self.listaStrings()
             else:
                 self.errores.append(Error('Falto un string despues de la coma ,',self.tokens[0].columna, self.tokens[0].fila))
+        else:
+            self.dot.edge('Ls','ε')
                 
     #<Registros> ::= Registros igual corcheteA <registro> <otroregistro> corcheteC
     #<registro> ::= llaveA <valor> <otroValor> llaveC
@@ -174,6 +212,9 @@ class Sintactico():
     
     def registros(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema =="Registros":
+            self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+            self.dot.edge('C',f'N{self.i}')
+            self.i+=1
             self.tokens.pop(0)
             if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "=":
                 self.tokens.pop(0)
@@ -233,11 +274,11 @@ class Sintactico():
             self.otroregistro()
             
     def funciones(self):
-        if self.tokens[0].nombre == "Texto":
+        if self.tokens[0].lexema =="imprimir" or self.tokens[0].lexema =="imprimirln" or self.tokens[0].lexema == "conteo" or self.tokens[0].lexema =="promedio" or self.tokens[0].lexema =="contarsi" or self.tokens[0].lexema =="datos" or self.tokens[0].lexema =="sumar" or self.tokens[0].lexema =="stock" or self.tokens[0].lexema =="max" or self.tokens[0].lexema =="min" or self.tokens[0].lexema =="exportarReporte":
             self.funcion()
             self.otrafuncion()
         else:
-            self.errores.append(Error('No hay funciones',self.tokens[0].columna, self.tokens[0].fila))
+            self.errores.append(Error('No hay funciones :(',self.tokens[0].columna, self.tokens[0].fila))
             
         
     def funcion(self):
@@ -260,6 +301,7 @@ class Sintactico():
             self.funcion()
             self.otrafuncion()
         else:
+            self.dot.render('Arbol.dot')
             print("Analisis completo xd")
             
     def imprimir(self):

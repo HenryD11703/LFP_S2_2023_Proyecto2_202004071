@@ -5,7 +5,7 @@ from Lexico.Analizador import Analizador
 from Sintáctico.Gramatica import Sintactico
 
 def abrir_archivo():
-    archivo = filedialog.askopenfile(filetypes=[("Archivos de texto", "*.txt")])
+    archivo = filedialog.askopenfile(filetypes=[("Archivo Bizadata", "*.bizdata")])
     if archivo:
         contenido = archivo.read()
         cuadro_texto_grande.delete("1.0", "end")
