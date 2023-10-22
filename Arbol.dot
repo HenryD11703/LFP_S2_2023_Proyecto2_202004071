@@ -12,29 +12,134 @@ digraph {
 	B -> N2
 	N3 [label="\"codigo\""]
 	B -> N3
-	Ls [label="Lista Strings"]
-	B -> Ls
+	L4 [label="Lista Strings"]
+	B -> L4
 	N4 [label=","]
-	Ls -> N4
+	L4 -> N4
 	N5 [label="\"producto\""]
-	Ls -> N5
+	L4 -> N5
+	L6 [label="Lista Strings"]
+	L4 -> L6
 	N6 [label=","]
-	Ls -> N6
+	L6 -> N6
 	N7 [label="\"precio_compra\""]
-	Ls -> N7
+	L6 -> N7
+	L8 [label="Lista Strings"]
+	L6 -> L8
 	N8 [label=","]
-	Ls -> N8
+	L8 -> N8
 	N9 [label="\"precio_venta\""]
-	Ls -> N9
+	L8 -> N9
+	L10 [label="Lista Strings"]
+	L8 -> L10
 	N10 [label=","]
-	Ls -> N10
+	L10 -> N10
 	N11 [label="\"stock\""]
-	Ls -> N11
-	Ls -> "ε"
+	L10 -> N11
+	L12 [label="Lista Strings"]
+	L10 -> L12
+	L12 -> "ε"
 	N12 [label="]"]
 	B -> N12
 	A -> C
 	N13 [label=Registros]
 	C -> N13
+	N14 [label="="]
+	C -> N14
+	N15 [label="["]
+	C -> N15
+	Reg16 [label=Registro]
+	C -> Reg16
+	N16 [label="{"]
+	Reg16 -> N16
+	V17 [label=Valor]
+	Reg16 -> V17
+	vs0 [label=1]
+	V17 -> vs0
+	OV17 [label="Otro Valor"]
+	Reg16 -> OV17
+	vs1 [label="\"Barbacoa\""]
+	V17 -> vs1
+	vs2 [label=10.50]
+	V17 -> vs2
+	vs3 [label=20.00]
+	V17 -> vs3
+	vs4 [label=6]
+	V17 -> vs4
+	N17 [label="}"]
+	Reg16 -> N17
+	oR18 [label=OtroRegistro]
+	C -> oR18
+	oR18 [label=OtroRegistro]
+	Reg18 [label=Registro]
+	oR18 -> Reg18
+	N18 [label="{"]
+	Reg18 -> N18
+	V19 [label=Valor]
+	Reg18 -> V19
+	vs5 [label=2]
+	V19 -> vs5
+	OV19 [label="Otro Valor"]
+	Reg18 -> OV19
+	vs6 [label="\"Salsa\""]
+	V19 -> vs6
+	vs7 [label=13.00]
+	V19 -> vs7
+	vs8 [label=16.00]
+	V19 -> vs8
+	vs9 [label=7]
+	V19 -> vs9
+	N19 [label="}"]
+	Reg18 -> N19
+	oR18 -> oR20
+	oR20 [label=OtroRegistro]
+	Reg20 [label=Registro]
+	oR20 -> Reg20
+	N20 [label="{"]
+	Reg20 -> N20
+	V21 [label=Valor]
+	Reg20 -> V21
+	vs10 [label=3]
+	V21 -> vs10
+	OV21 [label="Otro Valor"]
+	Reg20 -> OV21
+	vs11 [label="\"Mayonesa\""]
+	V21 -> vs11
+	vs12 [label=15.00]
+	V21 -> vs12
+	vs13 [label=18.00]
+	V21 -> vs13
+	vs14 [label=8]
+	V21 -> vs14
+	N21 [label="}"]
+	Reg20 -> N21
+	oR20 -> oR22
+	oR22 [label=OtroRegistro]
+	Reg22 [label=Registro]
+	oR22 -> Reg22
+	N22 [label="{"]
+	Reg22 -> N22
+	V23 [label=Valor]
+	Reg22 -> V23
+	vs15 [label=4]
+	V23 -> vs15
+	OV23 [label="Otro Valor"]
+	Reg22 -> OV23
+	vs16 [label="\"Mostaza\""]
+	V23 -> vs16
+	vs17 [label=14.00]
+	V23 -> vs17
+	vs18 [label=16.00]
+	V23 -> vs18
+	vs19 [label=4]
+	V23 -> vs19
+	N23 [label="}"]
+	Reg22 -> N23
+	oR22 -> oR24
+	oR24 [label=OtroRegistro]
+	va24 [label="ε"]
+	oR24 -> va24
+	N24 [label="]"]
+	C -> N24
 	A -> D
 }

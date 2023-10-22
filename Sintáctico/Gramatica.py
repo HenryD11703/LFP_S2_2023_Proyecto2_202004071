@@ -109,6 +109,7 @@ class Sintactico():
         self.listaRegistros = []
         self.errores = []
         self.i=0
+        self.v=0
         self.dot = Digraph()
         
 
@@ -157,12 +158,14 @@ class Sintactico():
                     self.tokens.pop(0)
                     if self.tokens[0].nombre == 'String':
                         self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
-                        self.dot.edge('B',f'N{self.i}')
+                        self.dot.edge('B',f'N{self.i}')                        
                         self.i+=1
-                        self.dot.node(f'Ls',f'Lista Strings')
+                        self.dot.node(f'L{self.i}',f'Lista Strings')
+                        self.dot.edge('B',f'L{self.i}')
                         self.tokens.pop(0)
-                        self.dot.edge('B','Ls')
+                        
                         self.listaStrings()
+                        
                         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema=="]":
                             self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
                             self.dot.edge('B',f'N{self.i}')
@@ -186,19 +189,21 @@ class Sintactico():
     def listaStrings(self):
         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema == ",":
             self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
-            self.dot.edge('Ls',f'N{self.i}')
+            self.dot.edge(f'L{self.i}',f'N{self.i}')
             self.i+=1
             self.tokens.pop(0)
             if self.tokens[0].nombre == 'String':
                 self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
-                self.dot.edge('Ls',f'N{self.i}')
+                self.dot.edge(f'L{self.i-1}',f'N{self.i}')
                 self.i+=1
                 self.tokens.pop(0)
+                self.dot.node(f'L{self.i}',f'Lista Strings')
+                self.dot.edge(f'L{self.i-2}',f'L{self.i}')    
                 self.listaStrings()
             else:
                 self.errores.append(Error('Falto un string despues de la coma ,',self.tokens[0].columna, self.tokens[0].fila))
         else:
-            self.dot.edge('Ls','ε')
+            self.dot.edge(f'L{self.i}','ε')
                 
     #<Registros> ::= Registros igual corcheteA <registro> <otroregistro> corcheteC
     #<registro> ::= llaveA <valor> <otroValor> llaveC
@@ -217,12 +222,30 @@ class Sintactico():
             self.i+=1
             self.tokens.pop(0)
             if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "=":
+                self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+                self.dot.edge('C',f'N{self.i}')
+                self.i+=1
                 self.tokens.pop(0)
                 if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "[":
+                    self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+                    self.dot.edge('C',f'N{self.i}')
+                    self.i+=1
                     self.tokens.pop(0)
+                    
+                    self.dot.node(f'Reg{self.i}','Registro')
+                    self.dot.edge('C',f'Reg{self.i}')
                     self.registro()
+                    
+                    
+                    self.dot.node(f'oR{self.i}','OtroRegistro')
+                    self.dot.edge('C',f'oR{self.i}')
                     self.otroregistro()
+                    
+                    
                     if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "]":
+                        self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+                        self.dot.edge('C',f'N{self.i}')
+                        self.i+=1
                         self.tokens.pop(0)
                     else:
                        self.errores.append(Error('Se esperaba ]',self.tokens[0].columna, self.tokens[0].fila)) # 
@@ -238,40 +261,65 @@ class Sintactico():
        
     def registro(self):
         if self.tokens[0].nombre =="Simbolo" and self.tokens[0].lexema=="{":
+            self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Reg{self.i}',f'N{self.i}')
+            reg=self.i
+            self.i+=1
             self.tokens.pop(0)
-            res = self.valor() 
-            if res is not None:
-                registro = []
-                registro.append(res.lexema)
-                self.otroValor(registro)
-                if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="}":
-                    self.tokens.pop(0)
-                    self.listaRegistros.append(registro)
-                else:
+            
+            self.dot.node(f'V{self.i}','Valor')
+            self.dot.edge(f'Reg{self.i-1}',f'V{self.i}')
+            self.valor() 
+            self.dot.node(f'OV{self.i}','Otro Valor')
+            self.dot.edge(f'Reg{self.i-1}',f'OV{self.i}')
+            self.otroValor()
+            
+            if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="}":
+                self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Reg{reg}',f'N{self.i}')
+                reg+=1
+                self.i+=1
+                self.tokens.pop(0)
+            else:
                     self.errores.append(Error('La lista de registro no fue cerrada',self.tokens[0].columna, self.tokens[0].fila))           
         else: 
             self.errores.append(Error('Se esperaba al menos un registro',self.tokens[0].columna, self.tokens[0].fila))
             
     def valor(self):
         if self.tokens[0].nombre == "String" or self.tokens[0].nombre == "Entero" or self.tokens[0].nombre == "Decimal":
-            campo = self.tokens.pop(0)
-            return campo
+            print(f'{self.i} {self.tokens[0].lexema}')
+            self.dot.node(f'vs{self.v}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'V{self.i}',f'vs{self.v}')
+            self.v+=1
+            
+            
+            self.tokens.pop(0)
         else:
             self.errores.append(Error('Deberia haber un string o un numero',self.tokens[0].columna, self.tokens[0].fila))
-            return None
     
-    def otroValor(self,registro):
+    def otroValor(self):
         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema == ",":
+            print(f'{self.tokens[0].lexema}')
             self.tokens.pop(0)
-            res = self.valor()
-            if res is not None:
-                registro.append(res.lexema)
-                self.otroValor(registro)    
+            self.valor()
+            self.otroValor()
+        else:
+            print("registro completo")
+            
+                
     
     def otroregistro(self):
         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema=="{":
+            self.dot.node(f'oR{self.i}','OtroRegistro')
+            self.dot.node(f'Reg{self.i}','Registro')
+            self.dot.edge(f'oR{self.i}',f'Reg{self.i}')   
             self.registro()
+            self.dot.edge(f'oR{self.i-2}',f'oR{self.i}')
             self.otroregistro()
+        else:
+            self.dot.node(f'oR{self.i}','OtroRegistro')
+            self.dot.node(f'va{self.i}','ε')
+            self.dot.edge(f'oR{self.i}',f'va{self.i}')
             
     def funciones(self):
         if self.tokens[0].lexema =="imprimir" or self.tokens[0].lexema =="imprimirln" or self.tokens[0].lexema == "conteo" or self.tokens[0].lexema =="promedio" or self.tokens[0].lexema =="contarsi" or self.tokens[0].lexema =="datos" or self.tokens[0].lexema =="sumar" or self.tokens[0].lexema =="stock" or self.tokens[0].lexema =="max" or self.tokens[0].lexema =="min" or self.tokens[0].lexema =="exportarReporte":
