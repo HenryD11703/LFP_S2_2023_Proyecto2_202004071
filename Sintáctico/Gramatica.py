@@ -105,16 +105,33 @@ from graphviz import Digraph
 class Sintactico():
     def __init__(self,tokens) -> None:
         self.tokens = tokens
-        self.listaClaves = []
-        self.listaRegistros = []
+        self.listaClaves=[]
+        self.listaRegistros=[]
         self.errores = []
         self.i=0
         self.v=0
+        self.cf=0
+        self.funcionc=0
         self.dot = Digraph()
+        self.textoimp=""
+        self.textoimpln=""
+        
         
 
         tokenN = Token('Fin','Fin',0,0)
         self.tokens.append(tokenN)
+    
+    def imprimirtxt(self):
+        return self.textoimp
+    
+    def imprimirtxtln(self):
+        return self.textoimpln
+        
+    def mostrarclaves(self):
+        return self.listaClaves
+    
+    def mostrarRegistros(self):
+        return self.listaRegistros
     
     def ImprimirErrores(self):
         print("Errores")
@@ -141,6 +158,7 @@ class Sintactico():
     
     #<Claves> ::= Claves igual corcheteA string <ListaStrings> corcheteC
     def claves(self):
+        
         if self.tokens[0].nombre == 'Texto' and self.tokens[0].lexema =="Claves":
             self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
             self.dot.edge('B',f'N{self.i}')
@@ -157,13 +175,15 @@ class Sintactico():
                     self.i+=1
                     self.tokens.pop(0)
                     if self.tokens[0].nombre == 'String':
+                        
                         self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
                         self.dot.edge('B',f'N{self.i}')                        
                         self.i+=1
                         self.dot.node(f'L{self.i}',f'Lista Strings')
                         self.dot.edge('B',f'L{self.i}')
-                        self.tokens.pop(0)
-                        
+                        clave = self.tokens.pop(0)
+                        self.listaClaves.append(clave.lexema)
+                         
                         self.listaStrings()
                         
                         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema=="]":
@@ -196,7 +216,8 @@ class Sintactico():
                 self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
                 self.dot.edge(f'L{self.i-1}',f'N{self.i}')
                 self.i+=1
-                self.tokens.pop(0)
+                clave = self.tokens.pop(0)
+                self.listaClaves.append(clave.lexema)
                 self.dot.node(f'L{self.i}',f'Lista Strings')
                 self.dot.edge(f'L{self.i-2}',f'L{self.i}')    
                 self.listaStrings()
@@ -265,6 +286,8 @@ class Sintactico():
             self.dot.edge(f'Reg{self.i}',f'N{self.i}')
             reg=self.i
             self.i+=1
+            
+            
             self.tokens.pop(0)
             
             self.dot.node(f'V{self.i}','Valor')
@@ -290,6 +313,7 @@ class Sintactico():
             print(f'{self.i} {self.tokens[0].lexema}')
             self.dot.node(f'vs{self.v}',f'{self.tokens[0].lexema}')
             self.dot.edge(f'V{self.i}',f'vs{self.v}')
+            
             self.v+=1
             
             
@@ -299,7 +323,6 @@ class Sintactico():
     
     def otroValor(self):
         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema == ",":
-            print(f'{self.tokens[0].lexema}')
             self.tokens.pop(0)
             self.valor()
             self.otroValor()
@@ -323,14 +346,22 @@ class Sintactico():
             
     def funciones(self):
         if self.tokens[0].lexema =="imprimir" or self.tokens[0].lexema =="imprimirln" or self.tokens[0].lexema == "conteo" or self.tokens[0].lexema =="promedio" or self.tokens[0].lexema =="contarsi" or self.tokens[0].lexema =="datos" or self.tokens[0].lexema =="sumar" or self.tokens[0].lexema =="stock" or self.tokens[0].lexema =="max" or self.tokens[0].lexema =="min" or self.tokens[0].lexema =="exportarReporte":
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.edge('D',f'F{self.cf}') 
+            
             self.funcion()
+            
+            self.dot.node(f'oF{self.cf-1}','OtraFuncion')
+            self.dot.edge('D',f'oF{self.cf-1}')
             self.otrafuncion()
         else:
             self.errores.append(Error('No hay funciones :(',self.tokens[0].columna, self.tokens[0].fila))
             
         
     def funcion(self):
-        if self.tokens[0].lexema =="imprimir" or self.tokens[0].lexema =="imprimirln" or self.tokens[0].lexema == "conteo" or self.tokens[0].lexema =="promedio" or self.tokens[0].lexema =="contarsi" or self.tokens[0].lexema =="datos" or self.tokens[0].lexema =="sumar" or self.tokens[0].lexema =="stock" or self.tokens[0].lexema =="max" or self.tokens[0].lexema =="min" or self.tokens[0].lexema =="exportarReporte":
+        if self.tokens[0].lexema =="imprimir" or self.tokens[0].lexema =="imprimirln" or self.tokens[0].lexema == "conteo" or self.tokens[0].lexema =="promedio" or self.tokens[0].lexema =="contarsi" or self.tokens[0].lexema =="datos" or self.tokens[0].lexema =="sumar" or self.tokens[0].lexema =="max" or self.tokens[0].lexema =="min" or self.tokens[0].lexema =="exportarReporte":
+            
+            
             self.imprimir()
             self.imprimirln()
             self.conteo()
@@ -342,28 +373,51 @@ class Sintactico():
             self.fmin()
             self.exportarReporte()
         else:
-             self.errores.append(Error('No hay funciones',self.tokens[0].columna, self.tokens[0].fila))
+            
+            self.errores.append(Error('No hay funciones',self.tokens[0].columna, self.tokens[0].fila))
     
     def otrafuncion(self):
         if self.tokens[0].nombre !="Fin":
-            self.funcion()
+            self.funcion()  
             self.otrafuncion()
         else:
+            
             self.dot.render('Arbol.dot')
             print("Analisis completo xd")
             
     def imprimir(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="imprimir":
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
+            
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'S{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'S{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
+                    self.textoimp+=self.tokens[0].lexema
+                    self.dot.node(f'St{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'St{self.funcionc}')
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.dot.node(f'S2{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'S2{self.funcionc}')
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.dot.node(f'S3{self.funcionc}',f'{self.tokens[0].lexema}')
+                            self.dot.edge(f'Fu{self.cf}',f'S3{self.funcionc}')
+                            self.funcionc+=1
                             self.tokens.pop(0)
-                            print("Imprimir correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
                     else:
@@ -379,14 +433,36 @@ class Sintactico():
             
     def imprimirln(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="imprimirln":
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
+            
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'S{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'S{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
+                    self.dot.node(f'St{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'St{self.funcionc}')
+                    self.textoimpln+=self.tokens[0].lexema+'\n'
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.dot.node(f'S2{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'S2{self.funcionc}')
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.dot.node(f'S3{self.funcionc}',f'{self.tokens[0].lexema}')
+                            self.dot.edge(f'Fu{self.cf}',f'S3{self.funcionc}')
+                            self.funcionc+=1
                             self.tokens.pop(0)
                             print("ImprimirLn correcto")
                         else:
@@ -403,12 +479,31 @@ class Sintactico():
             
     def conteo(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="conteo":
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
+            
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'S{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'S{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                    self.dot.node(f'S2{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'S2{self.funcionc}')
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                        self.dot.node(f'S3{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'S3{self.funcionc}')
+                        self.funcionc+=1
                         self.tokens.pop(0)
                         print("Conteo correcto")
                     else:
@@ -421,13 +516,32 @@ class Sintactico():
             pass
             
     def promedio(self):
+        
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="promedio":
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'S{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'S{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
+                    self.dot.node(f'St{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'St{self.funcionc}')
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.dot.node(f'Sss{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'Sss{self.funcionc}')
+                        self.funcionc+=1
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
                             self.tokens.pop(0)
@@ -444,18 +558,42 @@ class Sintactico():
     
     def contarsi(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="contarsi":
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'S{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'S{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
+                    self.dot.node(f'Sr{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'Sr{self.funcionc}')
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==",":
+                        self.dot.node(f'S2{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'S2{self.funcionc}')
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Entero":
+                            self.dot.node(f'nn{self.funcionc}',f'{self.tokens[0].lexema}')
+                            self.dot.edge(f'Fu{self.cf}',f'nn{self.funcionc}')
                             self.tokens.pop(0)
                             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                                self.dot.node(f'S5{self.funcionc}',f'{self.tokens[0].lexema}')
+                                self.dot.edge(f'Fu{self.cf}',f'S5{self.funcionc}')
                                 self.tokens.pop(0)
                                 if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                                    self.dot.node(f'Smm{self.funcionc}',f'{self.tokens[0].lexema}')
+                                    self.dot.edge(f'Fu{self.cf}',f'Smm{self.funcionc}')
+                                    self.funcionc+=1
                                     self.tokens.pop(0)
                                     print("Contar correcto")
                             else:
@@ -471,13 +609,31 @@ class Sintactico():
 
     
     def datos(self):
-        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="datos":
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="datos":   
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'S2{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'S2{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                    self.dot.node(f'S3{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'S3{self.funcionc}')
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                        self.dot.node(f'S22{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'S22{self.funcionc}')
+                        self.funcionc+=1
                         self.tokens.pop(0)
                         print("Datos correcto")
                     else:
@@ -489,15 +645,35 @@ class Sintactico():
         
     
     def sumar(self):
-        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="sumar":
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="sumar": 
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'Ss2{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'Ss2{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
+                    self.dot.node(f'Ss3{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'Ss3{self.funcionc}')
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.dot.node(f'Ssd2{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'Ssd2{self.funcionc}')
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.dot.node(f'Ssdd2{self.funcionc}',f'{self.tokens[0].lexema}')
+                            self.dot.edge(f'Fu{self.cf}',f'Ssdd2{self.funcionc}')
+                            self.funcionc+=1
                             self.tokens.pop(0)
                             print("Sumar correcto")
                         else:
@@ -512,14 +688,34 @@ class Sintactico():
         
     def fmax(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="max":
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'Ss2{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'Ss2{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
+                    self.dot.node(f'Ssss2{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'Ssss2{self.funcionc}')
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.dot.node(f'ddSs2{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'ddSs2{self.funcionc}')
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.dot.node(f'Ssddddd2{self.funcionc}',f'{self.tokens[0].lexema}')
+                            self.dot.edge(f'Fu{self.cf}',f'Ssddddd2{self.funcionc}')
+                            self.funcionc += 1
                             self.tokens.pop(0)
                             print("max correcto")
                         else:
@@ -533,15 +729,35 @@ class Sintactico():
         
     
     def fmin(self):
-        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="min":
+        if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="min": 
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'Ss2{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'Ss2{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
+                    self.dot.node(f'Stt2{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'Stt2{self.funcionc}')
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.dot.node(f'Ss2ddd{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'Ss2ddd{self.funcionc}')
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.dot.node(f'Ssssssss2{self.funcionc}',f'{self.tokens[0].lexema}')
+                            self.dot.edge(f'Fu{self.cf}',f'Ssssssss2{self.funcionc}')
+                            self.funcionc += 1
                             self.tokens.pop(0)
                             print("min correcto")
                         else:
@@ -556,14 +772,34 @@ class Sintactico():
         
     def exportarReporte(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="exportarReporte":
+            self.cf+=1
+            self.dot.node(f'F{self.cf}','Funcion')
+            self.dot.node(f'oF{self.cf-1}',f'OtraFuncion')
+            self.dot.edge(f'oF{self.cf-2}',f'oF{self.cf-1}')
+            self.dot.edge(f'oF{self.cf-1}',f'F{self.cf}')
+            
+            self.dot.node(f'Fu{self.cf}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'F{self.cf-1}',f'Fu{self.cf}')
+            
+            self.dot.node(f't{self.funcionc}',f'{self.tokens[0].lexema}')
+            self.dot.edge(f'Fu{self.cf}',f't{self.funcionc}')
             self.tokens.pop(0)
             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema=="(":
+                self.dot.node(f'S2s2{self.funcionc}',f'{self.tokens[0].lexema}')
+                self.dot.edge(f'Fu{self.cf}',f'S2s2{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
+                    self.dot.node(f'S3s2{self.funcionc}',f'{self.tokens[0].lexema}')
+                    self.dot.edge(f'Fu{self.cf}',f'S3s2{self.funcionc}')
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
+                        self.dot.node(f'S4s2{self.funcionc}',f'{self.tokens[0].lexema}')
+                        self.dot.edge(f'Fu{self.cf}',f'S4s2{self.funcionc}')
                         self.tokens.pop(0)
                         if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==";":
+                            self.dot.node(f'S5s2{self.funcionc}',f'{self.tokens[0].lexema}')
+                            self.dot.edge(f'Fu{self.cf}',f'S5s2{self.funcionc}')
+                            self.funcionc += 1
                             self.tokens.pop(0)
                             print("Exportar correcto")
                         else:

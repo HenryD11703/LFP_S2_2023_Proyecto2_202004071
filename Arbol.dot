@@ -142,4 +142,198 @@ digraph {
 	N24 [label="]"]
 	C -> N24
 	A -> D
+	F0 [label=Funcion]
+	D -> F0
+	F1 [label=Funcion]
+	oF0 [label=OtraFuncion]
+	"oF-1" -> oF0
+	oF0 -> F1
+	Fu1 [label=imprimir]
+	F0 -> Fu1
+	t0 [label=imprimir]
+	Fu1 -> t0
+	S0 [label="("]
+	Fu1 -> S0
+	St0 [label="\"Reporte de\""]
+	Fu1 -> St0
+	S20 [label=")"]
+	Fu1 -> S20
+	S30 [label=";"]
+	Fu1 -> S30
+	oF0 [label=OtraFuncion]
+	D -> oF0
+	F2 [label=Funcion]
+	oF1 [label=OtraFuncion]
+	oF0 -> oF1
+	oF1 -> F2
+	Fu2 [label=imprimir]
+	F1 -> Fu2
+	t1 [label=imprimir]
+	Fu2 -> t1
+	S1 [label="("]
+	Fu2 -> S1
+	St1 [label="\"Abarroteria\""]
+	Fu2 -> St1
+	S21 [label=")"]
+	Fu2 -> S21
+	S31 [label=";"]
+	Fu2 -> S31
+	F3 [label=Funcion]
+	oF2 [label=OtraFuncion]
+	oF1 -> oF2
+	oF2 -> F3
+	Fu3 [label=imprimirln]
+	F2 -> Fu3
+	t2 [label=imprimirln]
+	Fu3 -> t2
+	S2 [label="("]
+	Fu3 -> S2
+	St2 [label="\"Reporte de\""]
+	Fu3 -> St2
+	S22 [label=")"]
+	Fu3 -> S22
+	S32 [label=";"]
+	Fu3 -> S32
+	F4 [label=Funcion]
+	oF3 [label=OtraFuncion]
+	oF2 -> oF3
+	oF3 -> F4
+	Fu4 [label=imprimirln]
+	F3 -> Fu4
+	t3 [label=imprimirln]
+	Fu4 -> t3
+	S3 [label="("]
+	Fu4 -> S3
+	St3 [label="\"Abarroteria\""]
+	Fu4 -> St3
+	S23 [label=")"]
+	Fu4 -> S23
+	S33 [label=";"]
+	Fu4 -> S33
+	F5 [label=Funcion]
+	oF4 [label=OtraFuncion]
+	oF3 -> oF4
+	oF4 -> F5
+	Fu5 [label=conteo]
+	F4 -> Fu5
+	t4 [label=conteo]
+	Fu5 -> t4
+	S4 [label="("]
+	Fu5 -> S4
+	S24 [label=")"]
+	Fu5 -> S24
+	S34 [label=";"]
+	Fu5 -> S34
+	F6 [label=Funcion]
+	oF5 [label=OtraFuncion]
+	oF4 -> oF5
+	oF5 -> F6
+	Fu6 [label=promedio]
+	F5 -> Fu6
+	t5 [label=promedio]
+	Fu6 -> t5
+	S5 [label="("]
+	Fu6 -> S5
+	St5 [label="\"stock\""]
+	Fu6 -> St5
+	Sss5 [label=")"]
+	Fu6 -> Sss5
+	F7 [label=Funcion]
+	oF6 [label=OtraFuncion]
+	oF5 -> oF6
+	oF6 -> F7
+	Fu7 [label=contarsi]
+	F6 -> Fu7
+	t6 [label=contarsi]
+	Fu7 -> t6
+	S6 [label="("]
+	Fu7 -> S6
+	Sr6 [label="\"stock\""]
+	Fu7 -> Sr6
+	S26 [label=","]
+	Fu7 -> S26
+	nn6 [label=0]
+	Fu7 -> nn6
+	S56 [label=")"]
+	Fu7 -> S56
+	Smm6 [label=";"]
+	Fu7 -> Smm6
+	F8 [label=Funcion]
+	oF7 [label=OtraFuncion]
+	oF6 -> oF7
+	oF7 -> F8
+	Fu8 [label=datos]
+	F7 -> Fu8
+	t7 [label=datos]
+	Fu8 -> t7
+	S27 [label="("]
+	Fu8 -> S27
+	S37 [label=")"]
+	Fu8 -> S37
+	S227 [label=";"]
+	Fu8 -> S227
+	F9 [label=Funcion]
+	oF8 [label=OtraFuncion]
+	oF7 -> oF8
+	oF8 -> F9
+	Fu9 [label=sumar]
+	F8 -> Fu9
+	t8 [label=sumar]
+	Fu9 -> t8
+	Ss28 [label="("]
+	Fu9 -> Ss28
+	Ss38 [label="\"stock\""]
+	Fu9 -> Ss38
+	Ssd28 [label=")"]
+	Fu9 -> Ssd28
+	Ssdd28 [label=";"]
+	Fu9 -> Ssdd28
+	F10 [label=Funcion]
+	oF9 [label=OtraFuncion]
+	oF8 -> oF9
+	oF9 -> F10
+	Fu10 [label=max]
+	F9 -> Fu10
+	t9 [label=max]
+	Fu10 -> t9
+	Ss29 [label="("]
+	Fu10 -> Ss29
+	Ssss29 [label="\"precio_venta\""]
+	Fu10 -> Ssss29
+	ddSs29 [label=")"]
+	Fu10 -> ddSs29
+	Ssddddd29 [label=";"]
+	Fu10 -> Ssddddd29
+	F11 [label=Funcion]
+	oF10 [label=OtraFuncion]
+	oF9 -> oF10
+	oF10 -> F11
+	Fu11 [label=min]
+	F10 -> Fu11
+	t10 [label=min]
+	Fu11 -> t10
+	Ss210 [label="("]
+	Fu11 -> Ss210
+	Stt210 [label="\"precio_compra\""]
+	Fu11 -> Stt210
+	Ss2ddd10 [label=")"]
+	Fu11 -> Ss2ddd10
+	Ssssssss210 [label=";"]
+	Fu11 -> Ssssssss210
+	F12 [label=Funcion]
+	oF11 [label=OtraFuncion]
+	oF10 -> oF11
+	oF11 -> F12
+	Fu12 [label=exportarReporte]
+	F11 -> Fu12
+	t11 [label=exportarReporte]
+	Fu12 -> t11
+	S2s211 [label="("]
+	Fu12 -> S2s211
+	S3s211 [label="\"Reporte HTML de abarroterÃ­a\""]
+	Fu12 -> S3s211
+	S4s211 [label=")"]
+	Fu12 -> S4s211
+	S5s211 [label=";"]
+	Fu12 -> S5s211
 }

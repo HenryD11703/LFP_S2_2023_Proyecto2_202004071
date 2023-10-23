@@ -11,13 +11,8 @@ def abrir_archivo():
         cuadro_texto_grande.delete("1.0", "end")
         cuadro_texto_grande.insert("1.0", contenido)
 
-def escribir():
-    cuadro_texto_pequeño.config(state="normal")  
-    cuadro_texto_pequeño.delete("1.0", "end")   
-    # TODO: Hacer aca la impresion del codigo procesado
-    cuadro_texto_pequeño.insert("1.0", "Hola")  # *Agregar el contenido aca 
-    cuadro_texto_pequeño.config(state="disabled") 
-    
+
+
 def analizar():
     texto = cuadro_texto_grande.get("1.0","end")
     analizador = Analizador(texto)
@@ -31,7 +26,28 @@ def analizar():
     s.analizar()
     s.ImprimirErrores()
     
+    claves = s.mostrarclaves()
+    for elementdo in claves:
+        print(elementdo)
+        
+    regs = s.mostrarRegistros()
+    for elementdo in regs:
+        print(elementdo)
+    
+    imprimir = s.imprimirtxt() +"\n"
+    imprimirln = s.imprimirtxtln() +"\n"
+    res = imprimir + '\n' + imprimirln
+    
+    escribir(res)
+    
 
+def escribir(textoimp):
+    cuadro_texto_pequeño.config(state="normal")  
+    cuadro_texto_pequeño.delete("1.0", "end")  
+    
+    cuadro_texto_pequeño.insert("1.0", textoimp)  # *Agregar el contenido aca 
+    cuadro_texto_pequeño.config(state="disabled") 
+    
 
 ventana = tk.Tk()
 ventana.title("Interfaz con Tkinter")
