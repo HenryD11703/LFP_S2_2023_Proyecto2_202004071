@@ -27,19 +27,42 @@ def analizar():
     s.ImprimirErrores()
     
     claves = s.mostrarclaves()
-    for elementdo in claves:
-        print(elementdo)
+ 
         
-    regs = s.mostrarRegistros()
-    for elementdo in regs:
-        print(elementdo)
+    regsd = s.mostrarRegistros()
+    regs = eliminar_registros_duplicados(regsd)
+
+        
+    cuadro = []
+    cuadro.append(claves)
+    cuadro.append(regs)
     
+    tabla = s.datosimp(claves,regs)
+    
+    conteo=s.conteoimp(regs)
+     
+        
+    print(conteo)
+
+    print(tabla)#filas para mostrarlo en consola bonito
+
+   
     imprimir = s.imprimirtxt() +"\n"
     imprimirln = s.imprimirtxtln() +"\n"
-    res = imprimir + '\n' + imprimirln
+    res = imprimir + '\n' + imprimirln  +str(conteo) +'\n'+'\n' + tabla + '\n' 
     
     escribir(res)
-    
+
+def eliminar_registros_duplicados(lista):
+    lista_sin_duplicados = []
+    registro_anterior = None
+
+    for registro in lista:
+        if registro != registro_anterior:
+            lista_sin_duplicados.append(registro)
+        registro_anterior = registro
+
+    return lista_sin_duplicados
 
 def escribir(textoimp):
     cuadro_texto_pequeño.config(state="normal")  

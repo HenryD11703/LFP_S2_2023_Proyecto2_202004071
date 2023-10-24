@@ -115,11 +115,30 @@ class Sintactico():
         self.dot = Digraph()
         self.textoimp=""
         self.textoimpln=""
+        self.datosd=False
+        self.tabla=""
+        self.conteos=False
+        self.conteop=0
+   
         
         
 
         tokenN = Token('Fin','Fin',0,0)
         self.tokens.append(tokenN)
+    
+    def conteoimp(self,reg):
+        if self.conteos is True:
+            self.conteop=len(reg)
+        return self.conteop
+            
+
+    def datosimp(self,claves,regs):
+        if self.datosd is True: 
+            self.tabla = " | ".join(claves) + "\n"  #Encabezados para mostrarlo en consola bonito nada mas
+            #join para concatenar
+            for fila in regs:
+                self.tabla += " | ".join(fila) + "\n"
+        return self.tabla
     
     def imprimirtxt(self):
         return self.textoimp
@@ -133,6 +152,9 @@ class Sintactico():
     def mostrarRegistros(self):
         return self.listaRegistros
     
+ 
+    
+    
     def ImprimirErrores(self):
         print("Errores")
         for error in self.errores:
@@ -142,7 +164,14 @@ class Sintactico():
         self.dot.node('A','Inicio')
         self.inicio()
         
-        
+    def recuperar(self, token):
+        while self.tokens and self.tokens[0].lexema != token and self.tokens[0].lexema != 'Fin':
+            self.tokens.pop(0)
+    
+    def recuperarn(self, token):
+        while self.tokens and self.tokens[0].nombre != token and self.tokens[0].lexema != 'Fin':
+            self.tokens.pop(0)
+  
     
     #<Inicio> ::= <Claves> <Registros> <Funciones>
     def inicio(self):
@@ -158,22 +187,25 @@ class Sintactico():
     
     #<Claves> ::= Claves igual corcheteA string <ListaStrings> corcheteC
     def claves(self):
-        
+        self.recuperar('Claves')
         if self.tokens[0].nombre == 'Texto' and self.tokens[0].lexema =="Claves":
             self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
             self.dot.edge('B',f'N{self.i}')
             self.i+=1
             self.tokens.pop(0)
+            self.recuperar('=')
             if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "=":
                 self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
                 self.dot.edge('B',f'N{self.i}')
                 self.i+=1
                 self.tokens.pop(0)
+                self.recuperar('[')
                 if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "[":
                     self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
                     self.dot.edge('B',f'N{self.i}')
                     self.i+=1
                     self.tokens.pop(0)
+                    self.recuperarn('String')
                     if self.tokens[0].nombre == 'String':
                         
                         self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
@@ -201,6 +233,7 @@ class Sintactico():
             else:
                 self.errores.append(Error('Falto un signo =',self.tokens[0].columna, self.tokens[0].fila))
         else:
+           
             self.errores.append(Error('No se encontraron las claves',self.tokens[0].columna, self.tokens[0].fila))
             
      
@@ -292,6 +325,7 @@ class Sintactico():
             
             self.dot.node(f'V{self.i}','Valor')
             self.dot.edge(f'Reg{self.i-1}',f'V{self.i}')
+            self.listaV = []
             self.valor() 
             self.dot.node(f'OV{self.i}','Otro Valor')
             self.dot.edge(f'Reg{self.i-1}',f'OV{self.i}')
@@ -310,10 +344,11 @@ class Sintactico():
             
     def valor(self):
         if self.tokens[0].nombre == "String" or self.tokens[0].nombre == "Entero" or self.tokens[0].nombre == "Decimal":
+            
             print(f'{self.i} {self.tokens[0].lexema}')
             self.dot.node(f'vs{self.v}',f'{self.tokens[0].lexema}')
             self.dot.edge(f'V{self.i}',f'vs{self.v}')
-            
+            self.listaV.append(self.tokens[0].lexema)
             self.v+=1
             
             
@@ -323,6 +358,7 @@ class Sintactico():
     
     def otroValor(self):
         if self.tokens[0].nombre == "Simbolo" and self.tokens[0].lexema == ",":
+            self.listaRegistros.append(self.listaV)
             self.tokens.pop(0)
             self.valor()
             self.otroValor()
@@ -505,6 +541,7 @@ class Sintactico():
                         self.dot.edge(f'Fu{self.cf}',f'S3{self.funcionc}')
                         self.funcionc+=1
                         self.tokens.pop(0)
+                        self.conteos=True
                         print("Conteo correcto")
                     else:
                         self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
@@ -575,6 +612,9 @@ class Sintactico():
                 self.dot.edge(f'Fu{self.cf}',f'S{self.funcionc}')
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
+                    
+                    #usar este string para la funcion stringcontarsi
+
                     self.dot.node(f'Sr{self.funcionc}',f'{self.tokens[0].lexema}')
                     self.dot.edge(f'Fu{self.cf}',f'Sr{self.funcionc}')
                     self.tokens.pop(0)
@@ -635,6 +675,7 @@ class Sintactico():
                         self.dot.edge(f'Fu{self.cf}',f'S22{self.funcionc}')
                         self.funcionc+=1
                         self.tokens.pop(0)
+                        self.datosd=True
                         print("Datos correcto")
                     else:
                         self.errores.append(Error('Se esperaba un ;a',self.tokens[0].columna, self.tokens[0].fila)) 
