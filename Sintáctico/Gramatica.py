@@ -119,12 +119,76 @@ class Sintactico():
         self.tabla=""
         self.conteos=False
         self.conteop=0
-   
-        
-        
-
+        self.generarTabla=False
+        self.tituloTabla=""
         tokenN = Token('Fin','Fin',0,0)
         self.tokens.append(tokenN)
+        
+        
+    def generar_tabla_html(self, headers, rows):
+        if self.generarTabla is True:
+            if not headers or not rows:
+                return "<p>No hay datos para mostrar</p>"
+            
+            html = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>{}</title>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        background-color: #f2f2f2;
+                    }}
+                    h1 {{
+                        text-align: center;
+                        margin-top: 50px;
+                    }}
+                    h2 {{
+                        margin-top: 30px;
+                        margin-bottom: 20px;
+                    }}
+                    table {{
+                        border-collapse: collapse;
+                        margin: 0 auto;
+                        background-color: white;
+                        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                    }}
+                    th, td {{
+                        padding: 10px;
+                        text-align: left;
+                        border-bottom: 1px solid #ddd;
+                    }}
+                    th {{
+                        background-color: #4CAF50;
+                        color: white;
+                    }}
+                    tr:hover {{
+                        background-color: #f5f5f5;
+                    }}
+                </style>
+            </head>
+            <body>
+            """.format(self.tituloTabla)
+            
+            
+            html += "<h1>{}</h1>".format(self.tituloTabla) 
+            html += "<table>"
+            html += "<tr>"
+            for header in headers:
+                html += "<th>{}</th>".format(header)
+            html += "</tr>"
+            for row in rows:
+                html += "<tr>"
+                for cell in row:
+                    html += "<td>{}</td>".format(cell)
+                html += "</tr>"
+            html += "</table>"
+            html += "</body></html>"
+
+            return html
+    
     
     def conteoimp(self,reg):
         if self.conteos is True:
@@ -140,20 +204,21 @@ class Sintactico():
                 self.tabla += " | ".join(fila) + "\n"
         return self.tabla
     
+    #funcion imprimir
     def imprimirtxt(self):
         return self.textoimp
-    
+    #funcion imprimirln
     def imprimirtxtln(self):
         return self.textoimpln
-        
+    #mostrar las lista de claves        
     def mostrarclaves(self):
         return self.listaClaves
-    
+    #mostrar la lista de registros datos
     def mostrarRegistros(self):
         return self.listaRegistros
     
  
-    
+
     
     def ImprimirErrores(self):
         print("Errores")
@@ -163,6 +228,12 @@ class Sintactico():
     def analizar(self):
         self.dot.node('A','Inicio')
         self.inicio()
+    
+    #if self.tokens[0].lexema =="imprimir" or self.tokens[0].lexema =="imprimirln" or self.tokens[0].lexema == "conteo" or self.tokens[0].lexema =="promedio" or self.tokens[0].lexema =="contarsi" or self.tokens[0].lexema =="datos" or self.tokens[0].lexema =="sumar" or self.tokens[0].lexema =="stock" or self.tokens[0].lexema =="max" or self.tokens[0].lexema =="min" or self.tokens[0].lexema =="exportarReporte":
+    #metodo para recuperar errores de las funciones
+    def recuperarfunc(self, f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11):
+        while self.tokens and self.tokens[0].lexema != f1 and self.tokens[0].lexema != f2 and self.tokens[0].lexema != f3 and self.tokens[0].lexema != f4 and self.tokens[0].lexema != f5 and self.tokens[0].lexema != f6 and self.tokens[0].lexema != f7 and self.tokens[0].lexema != f8 and self.tokens[0].lexema != f9 and self.tokens[0].lexema != f10 and self.tokens[0].lexema != f11 and self.tokens[0].lexema != 'Fin':
+            self.tokens.pop(0) 
         
     def recuperar(self, token):
         while self.tokens and self.tokens[0].lexema != token and self.tokens[0].lexema != 'Fin':
@@ -193,19 +264,19 @@ class Sintactico():
             self.dot.edge('B',f'N{self.i}')
             self.i+=1
             self.tokens.pop(0)
-            self.recuperar('=')
+            
             if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "=":
                 self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
                 self.dot.edge('B',f'N{self.i}')
                 self.i+=1
                 self.tokens.pop(0)
-                self.recuperar('[')
+              
                 if self.tokens[0].nombre == 'Simbolo' and self.tokens[0].lexema == "[":
                     self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
                     self.dot.edge('B',f'N{self.i}')
                     self.i+=1
                     self.tokens.pop(0)
-                    self.recuperarn('String')
+                 
                     if self.tokens[0].nombre == 'String':
                         
                         self.dot.node(f'N{self.i}',f'{self.tokens[0].lexema}')
@@ -225,13 +296,17 @@ class Sintactico():
                             self.tokens.pop(0)
                         else:
                             self.errores.append(Error('La lista de claves no ha sido cerrada',self.tokens[0].columna, self.tokens[0].fila))
+                            self.recuperar(']')
                                                                                
                     else:
                         self.errores.append(Error('Se requiere al menos un elemento "String" en la lista',self.tokens[0].columna, self.tokens[0].fila))
+                        self.recuperarn('String')
                 else:
                     self.errores.append(Error('Falta la apertura de corchete',self.tokens[0].columna, self.tokens[0].fila))
+                    self.recuperar('[')
             else:
                 self.errores.append(Error('Falto un signo =',self.tokens[0].columna, self.tokens[0].fila))
+                self.recuperar('=')
         else:
            
             self.errores.append(Error('No se encontraron las claves',self.tokens[0].columna, self.tokens[0].fila))
@@ -303,12 +378,17 @@ class Sintactico():
                         self.tokens.pop(0)
                     else:
                        self.errores.append(Error('Se esperaba ]',self.tokens[0].columna, self.tokens[0].fila)) # 
+                       self.recuperar(']')
                 else:
-                    self.errores.append(Error('Se esperaban registros [',self.tokens[0].columna, self.tokens[0].fila))
+                    self.errores.append(Error('Se esperaban un simbolo [',self.tokens[0].columna, self.tokens[0].fila))
+                    self.recuperar('[')
+                    
             else: 
                 self.errores.append(Error('Se esperaba un simbolo igual',self.tokens[0].columna, self.tokens[0].fila))
+                self.recuperar('=')
         else:
             self.errores.append(Error('No se encontraron los registros',self.tokens[0].columna, self.tokens[0].fila))
+            self.recuperar('Registros')
             
   
             
@@ -338,9 +418,11 @@ class Sintactico():
                 self.i+=1
                 self.tokens.pop(0)
             else:
-                    self.errores.append(Error('La lista de registro no fue cerrada',self.tokens[0].columna, self.tokens[0].fila))           
+                    self.errores.append(Error('Error en lista de registros',self.tokens[0].columna, self.tokens[0].fila))
+                    self.recuperar('}')           
         else: 
-            self.errores.append(Error('Se esperaba al menos un registro',self.tokens[0].columna, self.tokens[0].fila))
+            self.errores.append(Error('Se esperaba un registro en {',self.tokens[0].columna, self.tokens[0].fila))
+            self.recuperar('{')
             
     def valor(self):
         if self.tokens[0].nombre == "String" or self.tokens[0].nombre == "Entero" or self.tokens[0].nombre == "Decimal":
@@ -391,7 +473,9 @@ class Sintactico():
             self.dot.edge('D',f'oF{self.cf-1}')
             self.otrafuncion()
         else:
-            self.errores.append(Error('No hay funciones :(',self.tokens[0].columna, self.tokens[0].fila))
+            self.errores.append(Error('Funcion incorrecta',self.tokens[0].columna, self.tokens[0].fila))
+            self.recuperarfunc('imprimir','imprimirln','conteo','promedio','contarsi','datos','sumar','stock','max','min','exportarReporte')
+            
             
         
     def funcion(self):
@@ -410,7 +494,8 @@ class Sintactico():
             self.exportarReporte()
         else:
             
-            self.errores.append(Error('No hay funciones',self.tokens[0].columna, self.tokens[0].fila))
+            self.errores.append(Error('Funcion incorrecta',self.tokens[0].columna, self.tokens[0].fila))
+            self.recuperarfunc('imprimir','imprimirln','conteo','promedio','contarsi','datos','sumar','stock','max','min','exportarReporte')
     
     def otrafuncion(self):
         if self.tokens[0].nombre !="Fin":
@@ -421,7 +506,7 @@ class Sintactico():
             self.dot.render('Arbol.dot')
             print("Analisis completo xd")
             
-    def imprimir(self):
+    def imprimir(self):# *Funcion completada
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="imprimir":
             self.cf+=1
             self.dot.node(f'F{self.cf}','Funcion')
@@ -456,18 +541,22 @@ class Sintactico():
                             self.tokens.pop(0)
                         else:
                             self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
+                            self.recuperarn(';')
                     else:
-                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila))
+                         
                 else:
                     self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.recuperar('String')
             else:
                self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+               self.recuperarn('(')
         else:
             pass
               
         
             
-    def imprimirln(self):
+    def imprimirln(self):#* funcion completada
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="imprimirln":
             self.cf+=1
             self.dot.node(f'F{self.cf}','Funcion')
@@ -503,12 +592,16 @@ class Sintactico():
                             print("ImprimirLn correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
+                            self.recuperarn(';')
                     else:
                         self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.recuperarn(')')
                 else:
                     self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.recuperarn('String')
             else:
-               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+               self.errores.append(Error('Despues de la imprimirln se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+               self.recuperarn('(')
         else:
             pass  
         
@@ -544,11 +637,14 @@ class Sintactico():
                         self.conteos=True
                         print("Conteo correcto")
                     else:
-                        self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila))
+                        self.recuperarn(';') 
                 else:
                     self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.recuperarn(')')
             else:
-               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+               self.errores.append(Error('Despues de conteo se esperaba un (',self.tokens[0].columna, self.tokens[0].fila)) 
+               self.recuperarn('(') 
         else:
             pass
             
@@ -585,12 +681,16 @@ class Sintactico():
                             print("Promedio correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;',self.tokens[0].columna, self.tokens[0].fila)) 
+                            self.recuperarn(';')
                     else:
-                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila))
+                        self.recuperarn(')') 
                 else:
                     self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.recuperar('String')
             else:
-               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+               self.errores.append(Error('Despues de promedio se esperaba un (',self.tokens[0].columna, self.tokens[0].fila)) 
+               self.recuperarn('(') 
 
     
     def contarsi(self):
@@ -638,14 +738,19 @@ class Sintactico():
                                     print("Contar correcto")
                             else:
                                  self.errores.append(Error('Se esperaba cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                                 self.recuperar(')')
                         else:
                             self.errores.append(Error('Se esperaba un numero entero',self.tokens[0].columna, self.tokens[0].fila)) 
+                            self.recuperar('String')
                     else:
                         self.errores.append(Error('Se esperaba una separacion por coma',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.recuperar('String')
                 else:
                     self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.recuperar('String')
             else:
-               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+               self.errores.append(Error('Despues de contarsi se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+               self.recuperar('(')  
 
     
     def datos(self):
@@ -678,11 +783,14 @@ class Sintactico():
                         self.datosd=True
                         print("Datos correcto")
                     else:
-                        self.errores.append(Error('Se esperaba un ;a',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.errores.append(Error('Se esperaba un ;a',self.tokens[0].columna, self.tokens[0].fila))
+                        self.recuperarn(';')
                 else:
-                    self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila))
+                    self.recuperarn(')') 
             else:
-               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+               self.errores.append(Error('Despues de datos se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+               self.recuperarn('(')  
         
     
     def sumar(self):
@@ -718,13 +826,17 @@ class Sintactico():
                             self.tokens.pop(0)
                             print("Sumar correcto")
                         else:
-                            self.errores.append(Error('Se esperaba un ;b',self.tokens[0].columna, self.tokens[0].fila)) 
+                            self.errores.append(Error('Se esperaba un ;b',self.tokens[0].columna, self.tokens[0].fila))
+                            self.recuperarn(';') 
                     else:
-                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila))
+                        self.recuperarn(')') 
                 else:
-                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila))
+                    self.recuperar('String') 
             else:
-               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+               self.errores.append(Error('Despues de sumar se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+               self.recuperarn('(')  
         
         
     def fmax(self):
@@ -761,12 +873,16 @@ class Sintactico():
                             print("max correcto")
                         else:
                             self.errores.append(Error('Se esperaba un ;c',self.tokens[0].columna, self.tokens[0].fila)) 
+                            self.recuperarn(';')
                     else:
                         self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.recuperarn(')')
                 else:
                     self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.recuperar('String')
             else:
-               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+                self.errores.append(Error('Despues de fmax se esperaba un (',self.tokens[0].columna, self.tokens[0].fila)) 
+                self.recuperarn('(') 
         
     
     def fmin(self):
@@ -802,13 +918,17 @@ class Sintactico():
                             self.tokens.pop(0)
                             print("min correcto")
                         else:
-                            self.errores.append(Error('Se esperaba un ;d',self.tokens[0].columna, self.tokens[0].fila)) 
+                            self.errores.append(Error('Se esperaba un ;d',self.tokens[0].columna, self.tokens[0].fila))
+                            self.recuperarn(';') 
                     else:
-                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila))
+                        self.recuperarn(')') 
                 else:
-                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila))
+                    self.recuperar('String') 
             else:
-               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+               self.errores.append(Error('Despues de fmin se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+               self.recuperarn('(')  
         
         
     def exportarReporte(self):
@@ -832,6 +952,7 @@ class Sintactico():
                 if self.tokens[0].nombre=="String":
                     self.dot.node(f'S3s2{self.funcionc}',f'{self.tokens[0].lexema}')
                     self.dot.edge(f'Fu{self.cf}',f'S3s2{self.funcionc}')
+                    self.tituloTabla=self.tokens[0].lexema
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
                         self.dot.node(f'S4s2{self.funcionc}',f'{self.tokens[0].lexema}')
@@ -842,14 +963,23 @@ class Sintactico():
                             self.dot.edge(f'Fu{self.cf}',f'S5s2{self.funcionc}')
                             self.funcionc += 1
                             self.tokens.pop(0)
+                            self.generarTabla=True
                             print("Exportar correcto")
                         else:
-                            self.errores.append(Error('Se esperaba un ;e',self.tokens[0].columna, self.tokens[0].fila)) 
+                            self.errores.append(Error('Se esperaba un ;e',self.tokens[0].columna, self.tokens[0].fila))
+                            self.recuperarn(';') 
                     else:
-                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila)) 
+                        self.errores.append(Error('Se esperaba un cierre de )',self.tokens[0].columna, self.tokens[0].fila))
+                        self.recuperarn(')') 
                 else:
                     self.errores.append(Error('Se esperaba un string',self.tokens[0].columna, self.tokens[0].fila)) 
+                    self.recuperar('String')
             else:
-               self.errores.append(Error('Despues de imprimir se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))  
+               self.errores.append(Error('Despues de exportarReporte se esperaba un (',self.tokens[0].columna, self.tokens[0].fila))
+               self.recuperarn('(')  
+        else:
+            pass
+    
+    
       
     

@@ -36,11 +36,24 @@ def analizar():
     cuadro = []
     cuadro.append(claves)
     cuadro.append(regs)
+    #meter este cuadro en un html que se vea bonito y para crear el archivo html con la tabla de registros
+    
     
     tabla = s.datosimp(claves,regs)
     
     conteo=s.conteoimp(regs)
-     
+    if conteo == 0:
+        conteo=" "
+    
+    tabladd = s.generar_tabla_html(claves,regs)
+    if tabladd is not None:
+        with open('tabla.html', 'w') as f:
+            f.write(tabladd)
+    else:
+        #vaciar el archivo
+        with open('tabla.html', 'w') as f:
+            f.write('')
+
         
     print(conteo)
 
@@ -52,6 +65,13 @@ def analizar():
     res = imprimir + '\n' + imprimirln  +str(conteo) +'\n'+'\n' + tabla + '\n' 
     
     escribir(res)
+
+
+
+    
+    
+    
+    
 
 def eliminar_registros_duplicados(lista):
     lista_sin_duplicados = []
