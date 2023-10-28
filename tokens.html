@@ -1,0 +1,1746 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Tokens</title>
+    <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f2f2f2;
+                    }
+                    h1 {
+                        text-align: center;
+                        margin-top: 50px;
+                    }
+                    h2 {
+                        margin-top: 30px;
+                        margin-bottom: 20px;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        margin: 0 auto;
+                        background-color: white;
+                        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                    }
+                    th, td {
+                        padding: 10px;
+                        text-align: left;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    th {
+                        background-color: #4CAF50;
+                        color: white;
+                    }
+                    tr:hover {
+                        background-color: #f5f5f5;
+                    }
+                </style>
+</head>
+<body>
+<h1>Token List</h1>
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Lexema</th>
+        <th>Fila</th>
+        <th>Columna</th>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>Claves</td>
+        <td>1</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>=</td>
+        <td>1</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>[</td>
+        <td>1</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"codigo"</td>
+        <td>2</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>2</td>
+        <td>13</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"producto"</td>
+        <td>2</td>
+        <td>14</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>2</td>
+        <td>24</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"precio_compra"</td>
+        <td>2</td>
+        <td>25</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>2</td>
+        <td>40</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"precio_venta"</td>
+        <td>3</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>3</td>
+        <td>19</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"stock"</td>
+        <td>3</td>
+        <td>21</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>]</td>
+        <td>4</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>Registros</td>
+        <td>6</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>=</td>
+        <td>6</td>
+        <td>11</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>[</td>
+        <td>6</td>
+        <td>13</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>7</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>1</td>
+        <td>7</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>7</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Barbacoa"</td>
+        <td>7</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>7</td>
+        <td>19</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>10.50</td>
+        <td>7</td>
+        <td>21</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>7</td>
+        <td>26</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>20.00</td>
+        <td>7</td>
+        <td>28</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>7</td>
+        <td>33</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>6</td>
+        <td>7</td>
+        <td>35</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>7</td>
+        <td>36</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>8</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>2</td>
+        <td>8</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>8</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Salsa"</td>
+        <td>8</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>8</td>
+        <td>16</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>13.00</td>
+        <td>8</td>
+        <td>18</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>8</td>
+        <td>23</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>16.00</td>
+        <td>8</td>
+        <td>25</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>8</td>
+        <td>30</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>7</td>
+        <td>8</td>
+        <td>31</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>8</td>
+        <td>32</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>9</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>3</td>
+        <td>9</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>9</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Mayonesa"</td>
+        <td>9</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>9</td>
+        <td>19</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>15.00</td>
+        <td>9</td>
+        <td>21</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>9</td>
+        <td>26</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>18.00</td>
+        <td>9</td>
+        <td>27</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>9</td>
+        <td>32</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>8</td>
+        <td>9</td>
+        <td>33</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>9</td>
+        <td>34</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>10</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>4</td>
+        <td>10</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>10</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Mostaza"</td>
+        <td>10</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>10</td>
+        <td>18</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>14.00</td>
+        <td>10</td>
+        <td>20</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>10</td>
+        <td>25</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>16.00</td>
+        <td>10</td>
+        <td>27</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>10</td>
+        <td>32</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>4</td>
+        <td>10</td>
+        <td>33</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>10</td>
+        <td>34</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>11</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>5</td>
+        <td>11</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>11</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Ketchup"</td>
+        <td>11</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>11</td>
+        <td>18</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>12.00</td>
+        <td>11</td>
+        <td>20</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>11</td>
+        <td>25</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>15.00</td>
+        <td>11</td>
+        <td>27</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>11</td>
+        <td>32</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>5</td>
+        <td>11</td>
+        <td>33</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>11</td>
+        <td>34</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>12</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>6</td>
+        <td>12</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>12</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Aderezo italiano"</td>
+        <td>12</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>12</td>
+        <td>27</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>11.50</td>
+        <td>12</td>
+        <td>29</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>12</td>
+        <td>34</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>14.50</td>
+        <td>12</td>
+        <td>36</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>12</td>
+        <td>41</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>3</td>
+        <td>12</td>
+        <td>42</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>12</td>
+        <td>43</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>13</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>7</td>
+        <td>13</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>13</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Aderezo ranch"</td>
+        <td>13</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>13</td>
+        <td>24</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>10.75</td>
+        <td>13</td>
+        <td>26</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>13</td>
+        <td>31</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>13.75</td>
+        <td>13</td>
+        <td>33</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>13</td>
+        <td>38</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>2</td>
+        <td>13</td>
+        <td>39</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>13</td>
+        <td>40</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>14</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>8</td>
+        <td>14</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>14</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Aderezo cesar"</td>
+        <td>14</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>14</td>
+        <td>24</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>11.25</td>
+        <td>14</td>
+        <td>26</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>14</td>
+        <td>31</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>14.25</td>
+        <td>14</td>
+        <td>33</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>14</td>
+        <td>38</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>1</td>
+        <td>14</td>
+        <td>39</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>14</td>
+        <td>40</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>15</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>9</td>
+        <td>15</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>15</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Mostaza Dijon"</td>
+        <td>15</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>15</td>
+        <td>24</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>16.00</td>
+        <td>15</td>
+        <td>26</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>15</td>
+        <td>31</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>19.00</td>
+        <td>15</td>
+        <td>33</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>15</td>
+        <td>38</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>5</td>
+        <td>15</td>
+        <td>40</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>15</td>
+        <td>41</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>16</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>10</td>
+        <td>16</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>16</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Salsa de Tomate"</td>
+        <td>16</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>16</td>
+        <td>27</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>12.50</td>
+        <td>16</td>
+        <td>29</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>16</td>
+        <td>34</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>15.50</td>
+        <td>16</td>
+        <td>36</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>16</td>
+        <td>41</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>7</td>
+        <td>16</td>
+        <td>43</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>16</td>
+        <td>44</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>17</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>11</td>
+        <td>17</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>17</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Salsa Picante"</td>
+        <td>17</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>17</td>
+        <td>25</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>14.00</td>
+        <td>17</td>
+        <td>27</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>17</td>
+        <td>32</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>17.00</td>
+        <td>17</td>
+        <td>34</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>17</td>
+        <td>39</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>6</td>
+        <td>17</td>
+        <td>41</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>17</td>
+        <td>42</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>18</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>12</td>
+        <td>18</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>18</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Mostaza a la Miel"</td>
+        <td>18</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>18</td>
+        <td>29</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>15.50</td>
+        <td>18</td>
+        <td>31</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>18</td>
+        <td>36</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>18.50</td>
+        <td>18</td>
+        <td>38</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>18</td>
+        <td>43</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>4</td>
+        <td>18</td>
+        <td>45</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>18</td>
+        <td>46</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>19</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>13</td>
+        <td>19</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>19</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Aderezo de Mil Islas"</td>
+        <td>19</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>19</td>
+        <td>32</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>11.75</td>
+        <td>19</td>
+        <td>34</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>19</td>
+        <td>39</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>14.75</td>
+        <td>19</td>
+        <td>41</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>19</td>
+        <td>46</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>3</td>
+        <td>19</td>
+        <td>48</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>19</td>
+        <td>49</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>20</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>14</td>
+        <td>20</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>20</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Aderezo de Vinagreta BalsÃ¡mica"</td>
+        <td>20</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>20</td>
+        <td>45</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>10.25</td>
+        <td>20</td>
+        <td>47</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>20</td>
+        <td>52</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>13.25</td>
+        <td>20</td>
+        <td>54</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>20</td>
+        <td>59</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>2</td>
+        <td>20</td>
+        <td>61</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>20</td>
+        <td>62</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>{</td>
+        <td>21</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>15</td>
+        <td>21</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>21</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Aderezo de Yogur y Hierbas"</td>
+        <td>21</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>21</td>
+        <td>38</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>13.75</td>
+        <td>21</td>
+        <td>40</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>21</td>
+        <td>45</td>
+    </tr>
+
+    <tr>
+        <td>Decimal</td>
+        <td>16.75</td>
+        <td>21</td>
+        <td>47</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>21</td>
+        <td>52</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>1</td>
+        <td>21</td>
+        <td>54</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>}</td>
+        <td>21</td>
+        <td>55</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>]</td>
+        <td>22</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>imprimir</td>
+        <td>27</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>27</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Reporte de"</td>
+        <td>27</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>27</td>
+        <td>22</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>27</td>
+        <td>23</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>imprimir</td>
+        <td>28</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>28</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Abarroteria"</td>
+        <td>28</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>28</td>
+        <td>23</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>28</td>
+        <td>24</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>imprimirln</td>
+        <td>30</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>30</td>
+        <td>11</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Reporte de"</td>
+        <td>30</td>
+        <td>12</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>30</td>
+        <td>24</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>30</td>
+        <td>25</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>imprimirln</td>
+        <td>31</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>31</td>
+        <td>11</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Abarroteria"</td>
+        <td>31</td>
+        <td>12</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>31</td>
+        <td>25</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>31</td>
+        <td>26</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>conteo</td>
+        <td>33</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>33</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>33</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>33</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>promedio</td>
+        <td>35</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>35</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"stock"</td>
+        <td>35</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>35</td>
+        <td>17</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>35</td>
+        <td>18</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>contarsi</td>
+        <td>37</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>37</td>
+        <td>9</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"stock"</td>
+        <td>37</td>
+        <td>10</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>,</td>
+        <td>37</td>
+        <td>17</td>
+    </tr>
+
+    <tr>
+        <td>Entero</td>
+        <td>7</td>
+        <td>37</td>
+        <td>18</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>37</td>
+        <td>19</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>37</td>
+        <td>20</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>datos</td>
+        <td>39</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>39</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>39</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>39</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>sumar</td>
+        <td>41</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>41</td>
+        <td>6</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"stock"</td>
+        <td>41</td>
+        <td>7</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>41</td>
+        <td>14</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>41</td>
+        <td>15</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>max</td>
+        <td>43</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>43</td>
+        <td>4</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"precio_venta"</td>
+        <td>43</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>43</td>
+        <td>19</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>43</td>
+        <td>20</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>min</td>
+        <td>45</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>45</td>
+        <td>4</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"precio_compra"</td>
+        <td>45</td>
+        <td>5</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>45</td>
+        <td>20</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>45</td>
+        <td>21</td>
+    </tr>
+
+    <tr>
+        <td>Texto</td>
+        <td>exportarReporte</td>
+        <td>47</td>
+        <td>1</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>(</td>
+        <td>47</td>
+        <td>16</td>
+    </tr>
+
+    <tr>
+        <td>String</td>
+        <td>"Reporte HTML de abarrotería"</td>
+        <td>47</td>
+        <td>17</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>)</td>
+        <td>47</td>
+        <td>47</td>
+    </tr>
+
+    <tr>
+        <td>Simbolo</td>
+        <td>;</td>
+        <td>47</td>
+        <td>48</td>
+    </tr>
+
+</table>
+</body>
+</html>

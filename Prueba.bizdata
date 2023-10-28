@@ -5,9 +5,20 @@ Claves = [
 
 Registros = [
 	{1, "Barbacoa", 10.50, 20.00, 6}
-	{2, "Salsa", 13.00, 16.00,7}
+    {2, "Salsa", 13.00, 16.00,7}
 	{3, "Mayonesa", 15.00,18.00,8}
 	{4, "Mostaza", 14.00, 16.00,4}
+	{5, "Ketchup", 12.00, 15.00,5}
+	{6, "Aderezo italiano", 11.50, 14.50,3}
+	{7, "Aderezo ranch", 10.75, 13.75,2}
+	{8, "Aderezo cesar", 11.25, 14.25,1}
+	{9, "Mostaza Dijon", 16.00, 19.00, 5}
+    {10, "Salsa de Tomate", 12.50, 15.50, 7}
+    {11, "Salsa Picante", 14.00, 17.00, 6}
+    {12, "Mostaza a la Miel", 15.50, 18.50, 4}
+    {13, "Aderezo de Mil Islas", 11.75, 14.75, 3}
+    {14, "Aderezo de Vinagreta BalsÃ¡mica", 10.25, 13.25, 2}
+    {15, "Aderezo de Yogur y Hierbas", 13.75, 16.75, 1}
 ]
 '''
 Comentario multilinea XD
@@ -23,7 +34,7 @@ conteo();
 
 promedio("stock");
 
-contarsi("stock",0);
+contarsi("stock",7);
 
 datos();
 

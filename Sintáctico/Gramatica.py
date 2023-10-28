@@ -121,6 +121,11 @@ class Sintactico():
         self.conteop=0
         self.generarTabla=False
         self.tituloTabla=""
+        self.promedios=""
+        self.sumasc=""
+        self.maximos=""
+        self.minimos=""
+        self.contadossi=""
         tokenN = Token('Fin','Fin',0,0)
         self.tokens.append(tokenN)
         
@@ -190,6 +195,7 @@ class Sintactico():
             return html
     
     
+    
     def conteoimp(self,reg):
         if self.conteos is True:
             self.conteop=len(reg)
@@ -217,8 +223,25 @@ class Sintactico():
     def mostrarRegistros(self):
         return self.listaRegistros
     
+    def promediosimp(self):
+        return self.promedios
+    
+    def sumasimp(self):
+        return self.sumasc
+    
+    def contarsiimp(self):
+        return self.contadossi
+    
+    def maximoimp(self):
+        return self.maximos
+    
+    def minimoimp(self):
+        return self.minimos
+    
  
 
+    def getlistaErrores(self):
+        return self.errores
     
     def ImprimirErrores(self):
         print("Errores")
@@ -241,6 +264,10 @@ class Sintactico():
     
     def recuperarn(self, token):
         while self.tokens and self.tokens[0].nombre != token and self.tokens[0].lexema != 'Fin':
+            self.tokens.pop(0)
+    
+    def recuperardos(self, token1, token2):
+        while self.tokens and self.tokens[0].lexema != token1 and self.tokens[0].lexema != token2 and self.tokens[0].lexema != 'Fin':
             self.tokens.pop(0)
   
     
@@ -606,7 +633,7 @@ class Sintactico():
             pass  
         
             
-    def conteo(self):
+    def conteo(self):#* funcion completada
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="conteo":
             self.cf+=1
             self.dot.node(f'F{self.cf}','Funcion')
@@ -648,8 +675,31 @@ class Sintactico():
         else:
             pass
             
-    def promedio(self):
-        
+    def calcularpromedio(self, campo):
+        if campo in self.listaClaves:
+            posicion = self.listaClaves.index(campo)
+            registrosColumna = set() 
+            suma=0
+            for registrod in self.listaRegistros:
+                record_as_tuple = tuple(registrod)
+                if record_as_tuple not in registrosColumna:
+                    registrosColumna.add(record_as_tuple)
+            for dato in registrosColumna:
+                print(dato[posicion])
+                s = dato[posicion]
+                suma+=float(s)
+            promedio = suma/len(registrosColumna)
+            print(promedio)    
+            self.promedios+='El promedio de la columna '+campo+' es: '+str(promedio)+'\n'
+            
+                    
+        else:
+            print(f"El campo {campo} no se encuentra en la lista de claves.")
+            
+
+
+            
+    def promedio(self):#* funcion completada
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="promedio":
             self.cf+=1
             self.dot.node(f'F{self.cf}','Funcion')
@@ -670,6 +720,8 @@ class Sintactico():
                 if self.tokens[0].nombre=="String":
                     self.dot.node(f'St{self.funcionc}',f'{self.tokens[0].lexema}')
                     self.dot.edge(f'Fu{self.cf}',f'St{self.funcionc}')
+                    
+                    self.calcularpromedio(self.tokens[0].lexema)
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
                         self.dot.node(f'Sss{self.funcionc}',f'{self.tokens[0].lexema}')
@@ -692,6 +744,20 @@ class Sintactico():
                self.errores.append(Error('Despues de promedio se esperaba un (',self.tokens[0].columna, self.tokens[0].fila)) 
                self.recuperarn('(') 
 
+    def contados(self, campo,numero):
+        if campo in self.listaClaves:
+            posicion = self.listaClaves.index(campo)
+            registrosColumna = set() 
+            suma=0
+            for registrod in self.listaRegistros:
+                record_as_tuple = tuple(registrod)
+                if record_as_tuple not in registrosColumna:
+                    registrosColumna.add(record_as_tuple)
+            contador = sum(1 for registro in registrosColumna if registro[posicion] == numero)
+            self.contadossi+='El numero de veces que se repite el numero '+numero+' en la columna '+campo+' es: '+str(contador)+'\n'        
+        else:
+            print(f"El campo {campo} no se encuentra en la lista de claves.")
+    
     
     def contarsi(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="contarsi":
@@ -713,7 +779,7 @@ class Sintactico():
                 self.tokens.pop(0)
                 if self.tokens[0].nombre=="String":
                     
-                    #usar este string para la funcion stringcontarsi
+                    columna = self.tokens[0].lexema
 
                     self.dot.node(f'Sr{self.funcionc}',f'{self.tokens[0].lexema}')
                     self.dot.edge(f'Fu{self.cf}',f'Sr{self.funcionc}')
@@ -722,9 +788,10 @@ class Sintactico():
                         self.dot.node(f'S2{self.funcionc}',f'{self.tokens[0].lexema}')
                         self.dot.edge(f'Fu{self.cf}',f'S2{self.funcionc}')
                         self.tokens.pop(0)
-                        if self.tokens[0].nombre=="Entero":
+                        if self.tokens[0].nombre=="Entero" or self.tokens[0].nombre=="Decimal":
                             self.dot.node(f'nn{self.funcionc}',f'{self.tokens[0].lexema}')
                             self.dot.edge(f'Fu{self.cf}',f'nn{self.funcionc}')
+                            self.contados(columna,self.tokens[0].lexema)
                             self.tokens.pop(0)
                             if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
                                 self.dot.node(f'S5{self.funcionc}',f'{self.tokens[0].lexema}')
@@ -741,7 +808,7 @@ class Sintactico():
                                  self.recuperar(')')
                         else:
                             self.errores.append(Error('Se esperaba un numero entero',self.tokens[0].columna, self.tokens[0].fila)) 
-                            self.recuperar('String')
+                            self.recuperardos('Entero','Decimal')
                     else:
                         self.errores.append(Error('Se esperaba una separacion por coma',self.tokens[0].columna, self.tokens[0].fila)) 
                         self.recuperar('String')
@@ -753,7 +820,7 @@ class Sintactico():
                self.recuperar('(')  
 
     
-    def datos(self):
+    def datos(self): #* funcion completada
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="datos":   
             self.cf+=1
             self.dot.node(f'F{self.cf}','Funcion')
@@ -793,7 +860,29 @@ class Sintactico():
                self.recuperarn('(')  
         
     
-    def sumar(self):
+    def sumarcampo(self, campo):
+        if campo in self.listaClaves:
+            posicion = self.listaClaves.index(campo)
+            registrosColumna = set() 
+            sumas=0
+            for registrod in self.listaRegistros:
+                record_as_tuple = tuple(registrod)
+                if record_as_tuple not in registrosColumna:
+                    registrosColumna.add(record_as_tuple)
+            for dato in registrosColumna:
+                print(dato[posicion])
+                s = dato[posicion]
+                sumas+=float(s)
+               
+            self.sumasc+='La suma de la columna '+campo+' es: '+str(sumas)+'\n'
+            
+                    
+        else:
+            print(f"El campo {campo} no se encuentra en la lista de claves.")
+    
+    
+    
+    def sumar(self): #* funcion completada
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="sumar": 
             self.cf+=1
             self.dot.node(f'F{self.cf}','Funcion')
@@ -814,6 +903,7 @@ class Sintactico():
                 if self.tokens[0].nombre=="String":
                     self.dot.node(f'Ss3{self.funcionc}',f'{self.tokens[0].lexema}')
                     self.dot.edge(f'Fu{self.cf}',f'Ss3{self.funcionc}')
+                    self.sumarcampo(self.tokens[0].lexema)
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
                         self.dot.node(f'Ssd2{self.funcionc}',f'{self.tokens[0].lexema}')
@@ -839,6 +929,23 @@ class Sintactico():
                self.recuperarn('(')  
         
         
+    def calcularmax(self, campo):
+        if campo in self.listaClaves:
+            posicion = self.listaClaves.index(campo)
+            registrosColumna = set() 
+            suma=0
+            for registrod in self.listaRegistros:
+                record_as_tuple = tuple(registrod)
+                if record_as_tuple not in registrosColumna:
+                    registrosColumna.add(record_as_tuple)
+            
+            max_numero = max(registro[posicion] for registro in registrosColumna)  
+            self.maximos+='El maximo de la columna '+campo+' es: '+str(max_numero)+'\n'         
+            
+                    
+        else:
+            print(f"El campo {campo} no se encuentra en la lista de claves.")    
+        
     def fmax(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="max":
             self.cf+=1
@@ -860,6 +967,7 @@ class Sintactico():
                 if self.tokens[0].nombre=="String":
                     self.dot.node(f'Ssss2{self.funcionc}',f'{self.tokens[0].lexema}')
                     self.dot.edge(f'Fu{self.cf}',f'Ssss2{self.funcionc}')
+                    self.calcularmax(self.tokens[0].lexema)
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
                         self.dot.node(f'ddSs2{self.funcionc}',f'{self.tokens[0].lexema}')
@@ -884,6 +992,18 @@ class Sintactico():
                 self.errores.append(Error('Despues de fmax se esperaba un (',self.tokens[0].columna, self.tokens[0].fila)) 
                 self.recuperarn('(') 
         
+    def calcularmim(self, campo):
+        if campo in self.listaClaves:
+            posicion = self.listaClaves.index(campo)
+            registrosColumna = set() 
+            suma=0
+            for registrod in self.listaRegistros:
+                record_as_tuple = tuple(registrod)
+                if record_as_tuple not in registrosColumna:
+                    registrosColumna.add(record_as_tuple)
+            
+            max_numero = min(registro[posicion] for registro in registrosColumna)  
+            self.minimos+='El minimo de la columna '+campo+' es: '+str(max_numero)+'\n'  
     
     def fmin(self):
         if self.tokens[0].nombre == "Texto" and self.tokens[0].lexema=="min": 
@@ -906,6 +1026,7 @@ class Sintactico():
                 if self.tokens[0].nombre=="String":
                     self.dot.node(f'Stt2{self.funcionc}',f'{self.tokens[0].lexema}')
                     self.dot.edge(f'Fu{self.cf}',f'Stt2{self.funcionc}')
+                    self.calcularmim(self.tokens[0].lexema)
                     self.tokens.pop(0)
                     if self.tokens[0].nombre=="Simbolo" and self.tokens[0].lexema==")":
                         self.dot.node(f'Ss2ddd{self.funcionc}',f'{self.tokens[0].lexema}')
