@@ -129,6 +129,31 @@ class Sintactico():
         tokenN = Token('Fin','Fin',0,0)
         self.tokens.append(tokenN)
         
+    
+    def reghtml(self):
+          
+        html = ""
+
+        for error in self.errores:
+            html += """
+    <tr>
+        <td>{}</td>
+        <td>{}</td>
+        <td>{}</td>
+        <td>{}</td>
+    </tr>
+""".format(error.lexema, error.tipo, error.fila, error.columna)
+
+
+        html += """
+</table>
+</body>
+</html>
+"""
+
+        return html
+    
+        
         
     def generar_tabla_html(self, headers, rows):
         if self.generarTabla is True:

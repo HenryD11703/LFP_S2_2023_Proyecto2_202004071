@@ -91,7 +91,7 @@ class Analizador():
                 </style>
 </head>
 <body>
-<h1>Token List</h1>
+<h1>Lista Tokens</h1>
 <table>
     <tr>
         <th>Nombre</th>
@@ -118,6 +118,73 @@ class Analizador():
 </body>
 </html>
 """
+
+        return html
+    
+    
+    def generahtmlerrores(self):
+  
+        html = """
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Errores</title>
+    <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f2f2f2;
+                    }
+                    h1 {
+                        text-align: center;
+                        margin-top: 50px;
+                    }
+                    h2 {
+                        margin-top: 30px;
+                        margin-bottom: 20px;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        margin: 0 auto;
+                        background-color: white;
+                        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                    }
+                    th, td {
+                        padding: 10px;
+                        text-align: left;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    th {
+                        background-color: #4CAF50;
+                        color: white;
+                    }
+                    tr:hover {
+                        background-color: #f5f5f5;
+                    }
+                </style>
+</head>
+<body>
+<h1>Lista de Errores</h1>
+<table>
+    <tr>
+        <th>Lexema</th>
+        <th>Tipo</th>
+        <th>Fila</th>
+        <th>Columna</th>
+    </tr>
+"""
+
+
+        for error in self.errores:
+            html += """
+    <tr>
+        <td>{}</td>
+        <td>{}</td>
+        <td>{}</td>
+        <td>{}</td>
+    </tr>
+""".format(error.lexema, error.tipo, error.fila, error.columna)
+
 
         return html
     
@@ -175,7 +242,7 @@ class Analizador():
                 elif ascii == 32 or ascii == 9 or ascii == 10:
                     pass
                 else:
-                    self.errores.append(Error(caracter,'lexico 18',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema=""#reset
                     estado="A"#Volver a empezar con el siguiente lexema
                 
@@ -212,11 +279,11 @@ class Analizador():
                     elif ascii == 32 or ascii == 9 or ascii == 10:
                         pass
                     else:
-                        self.errores.append(Error(caracter,'lexico 17',columna-len(lexema),fila))
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                         lexema=""#reset
                         estado="A"#Volver a empezar con el siguiente lexema
                 else:
-                    self.errores.append(Error(caracter,'lexico 16',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema=""
                     estado="A"
                     
@@ -230,7 +297,7 @@ class Analizador():
                     lexema+=caracter
                     estado="C"
                 elif ascii== 10:
-                    self.errores.append(Error(caracter,'lexico 15',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
                     estado = "A"
             
@@ -240,7 +307,7 @@ class Analizador():
                     lexema+=caracter
                     estado="E"
                 else:
-                    self.errores.append(Error(caracter,'lexico 14',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
                     estado = "A"
                     
@@ -281,11 +348,11 @@ class Analizador():
                     elif ascii == 32 or ascii == 9 or ascii == 10:
                         pass
                     else:
-                        self.errores.append(Error(caracter,'lexico 13',columna-len(lexema),fila))
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                         lexema=""#reset
                         estado="A"#Volver a empezar con el siguiente lexema
                 else:
-                    self.errores.append(Error(caracter,'lexico 12',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
                     estado = "A"
                     
@@ -318,7 +385,7 @@ class Analizador():
                 elif ascii == 32 or ascii == 9 or ascii == 10:
                     pass
                 else:
-                    self.errores.append(Error(caracter,'lexico 11',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema=""#reset
                     estado="A"#Volver a empezar con el siguiente lexema
                 
@@ -355,7 +422,7 @@ class Analizador():
                     elif ascii == 32 or ascii == 9 or ascii == 10:
                         pass
                     else:
-                        self.errores.append(Error(caracter,'lexico 10',columna-len(lexema),fila))
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                         lexema=""#reset
                         estado="A"#Volver a empezar con el siguiente lexema
                     
@@ -365,7 +432,7 @@ class Analizador():
                     lexema+=caracter#segunda comilla
                     estado="H2"
                 else:
-                    self.errores.append(Error(caracter,'lexico 9',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
                     estado = "A"
             
@@ -374,7 +441,7 @@ class Analizador():
                     lexema+=caracter#tercera comilla
                     estado="H3"
                 else:
-                    self.errores.append(Error(caracter,'lexico 8',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
                     estado = "A"
             
@@ -391,7 +458,7 @@ class Analizador():
                     lexema+=caracter#segunda comilla
                     estado="H5"
                 else:
-                    self.errores.append(Error(caracter,'lexico 7',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
                     estado = "A"
             
@@ -400,7 +467,7 @@ class Analizador():
                     lexema+=caracter#tercera comilla
                     estado="K"
                 else:
-                    self.errores.append(Error(caracter,'lexico 6',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
                     estado = "A"
                     
@@ -434,7 +501,7 @@ class Analizador():
                 elif ascii == 32 or ascii == 9 or ascii == 10:
                     pass
                 else:
-                        self.errores.append(Error(caracter,'lexico 5',columna-len(lexema),fila))
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                         lexema=""#reset
                         estado="A"#Volver a empezar con el siguiente lexema
                 
@@ -445,7 +512,7 @@ class Analizador():
                     lexema+=str(caracter)
                     estado="L"
                 else:
-                    self.errores.append(Error(caracter,'lexico 4',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
                     estado = "A"
             
@@ -480,7 +547,7 @@ class Analizador():
                 elif ascii == 32 or ascii == 9 or ascii == 10:
                     pass
                 else:
-                        self.errores.append(Error(caracter,'lexico 3',columna-len(lexema),fila))
+                        self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                         lexema=""#reset
                         estado="A"#Volver a empezar con el siguiente lexema
                 
@@ -518,11 +585,11 @@ class Analizador():
                     elif ascii == 32 or ascii == 9 or ascii == 10:
                         pass
                     else:
-                            self.errores.append(Error(caracter,'lexico 2',columna-len(lexema),fila))
+                            self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                             lexema=""#reset
                             estado="A"#Volver a empezar con el siguiente lexema
                 else:
-                    self.errores.append(Error(caracter,'lexico 1',columna-len(lexema),fila))
+                    self.errores.append(Error(caracter,'lexico',columna-len(lexema),fila))
                     lexema = ""
                     estado = "A"
                 
