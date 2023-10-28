@@ -10,66 +10,90 @@ digraph {
 	B -> N1
 	N2 [label="["]
 	B -> N2
-	N3 [label="\"codigo\""]
+	N3 [label="\"stock\""]
 	B -> N3
 	L4 [label="Lista Strings"]
 	B -> L4
 	N4 [label=","]
 	L4 -> N4
-	N5 [label="\"producto\""]
+	N5 [label="\"\""]
 	L4 -> N5
 	L6 [label="Lista Strings"]
 	L4 -> L6
-	N6 [label=","]
-	L6 -> N6
-	N7 [label="\"precio_compra\""]
-	L6 -> N7
-	L8 [label="Lista Strings"]
-	L6 -> L8
-	N8 [label=","]
-	L8 -> N8
-	N9 [label="\"precio_venta\""]
-	L8 -> N9
-	L10 [label="Lista Strings"]
-	L8 -> L10
-	N10 [label=","]
-	L10 -> N10
-	N11 [label="\"stock\""]
-	L10 -> N11
-	L12 [label="Lista Strings"]
-	L10 -> L12
-	L12 -> "ε"
-	N12 [label="]"]
-	B -> N12
+	L6 -> "ε"
+	N6 [label="]"]
+	B -> N6
 	A -> C
-	N13 [label=Registros]
-	C -> N13
-	N14 [label="="]
-	C -> N14
-	N15 [label="["]
-	C -> N15
+	N7 [label=Registros]
+	C -> N7
+	N8 [label="="]
+	C -> N8
+	N9 [label="["]
+	C -> N9
+	Reg10 [label=Registro]
+	C -> Reg10
+	N10 [label="{"]
+	Reg10 -> N10
+	V11 [label=Valor]
+	Reg10 -> V11
+	vs0 [label=6]
+	V11 -> vs0
+	OV11 [label="Otro Valor"]
+	Reg10 -> OV11
+	vs1 [label=2]
+	V11 -> vs1
+	N11 [label="}"]
+	Reg10 -> N11
+	oR12 [label=OtroRegistro]
+	C -> oR12
+	oR12 [label=OtroRegistro]
+	Reg12 [label=Registro]
+	oR12 -> Reg12
+	N12 [label="{"]
+	Reg12 -> N12
+	V13 [label=Valor]
+	Reg12 -> V13
+	vs2 [label=7]
+	V13 -> vs2
+	OV13 [label="Otro Valor"]
+	Reg12 -> OV13
+	vs3 [label=3]
+	V13 -> vs3
+	N13 [label="}"]
+	Reg12 -> N13
+	oR12 -> oR14
+	oR14 [label=OtroRegistro]
+	Reg14 [label=Registro]
+	oR14 -> Reg14
+	N14 [label="{"]
+	Reg14 -> N14
+	V15 [label=Valor]
+	Reg14 -> V15
+	vs4 [label=8]
+	V15 -> vs4
+	OV15 [label="Otro Valor"]
+	Reg14 -> OV15
+	vs5 [label=3]
+	V15 -> vs5
+	N15 [label="}"]
+	Reg14 -> N15
+	oR14 -> oR16
+	oR16 [label=OtroRegistro]
 	Reg16 [label=Registro]
-	C -> Reg16
+	oR16 -> Reg16
 	N16 [label="{"]
 	Reg16 -> N16
 	V17 [label=Valor]
 	Reg16 -> V17
-	vs0 [label=1]
-	V17 -> vs0
+	vs6 [label=4]
+	V17 -> vs6
 	OV17 [label="Otro Valor"]
 	Reg16 -> OV17
-	vs1 [label="\"Barbacoa\""]
-	V17 -> vs1
-	vs2 [label=10.50]
-	V17 -> vs2
-	vs3 [label=20.00]
-	V17 -> vs3
-	vs4 [label=6]
-	V17 -> vs4
+	vs7 [label=3]
+	V17 -> vs7
 	N17 [label="}"]
 	Reg16 -> N17
-	oR18 [label=OtroRegistro]
-	C -> oR18
+	oR16 -> oR18
 	oR18 [label=OtroRegistro]
 	Reg18 [label=Registro]
 	oR18 -> Reg18
@@ -77,26 +101,180 @@ digraph {
 	Reg18 -> N18
 	V19 [label=Valor]
 	Reg18 -> V19
-	vs5 [label=2]
-	V19 -> vs5
+	vs8 [label=5]
+	V19 -> vs8
 	OV19 [label="Otro Valor"]
 	Reg18 -> OV19
-	vs6 [label="\"Salsa\""]
-	V19 -> vs6
-	vs7 [label=13.00]
-	V19 -> vs7
-	vs8 [label=16.00]
-	V19 -> vs8
-	vs9 [label=7]
+	vs9 [label=3]
 	V19 -> vs9
 	N19 [label="}"]
 	Reg18 -> N19
 	oR18 -> oR20
 	oR20 [label=OtroRegistro]
-	va20 [label="ε"]
-	oR20 -> va20
-	N20 [label="]"]
-	C -> N20
+	Reg20 [label=Registro]
+	oR20 -> Reg20
+	N20 [label="{"]
+	Reg20 -> N20
+	V21 [label=Valor]
+	Reg20 -> V21
+	vs10 [label=3]
+	V21 -> vs10
+	OV21 [label="Otro Valor"]
+	Reg20 -> OV21
+	vs11 [label=3]
+	V21 -> vs11
+	N21 [label="}"]
+	Reg20 -> N21
+	oR20 -> oR22
+	oR22 [label=OtroRegistro]
+	Reg22 [label=Registro]
+	oR22 -> Reg22
+	N22 [label="{"]
+	Reg22 -> N22
+	V23 [label=Valor]
+	Reg22 -> V23
+	vs12 [label=2]
+	V23 -> vs12
+	OV23 [label="Otro Valor"]
+	Reg22 -> OV23
+	vs13 [label=3]
+	V23 -> vs13
+	N23 [label="}"]
+	Reg22 -> N23
+	oR22 -> oR24
+	oR24 [label=OtroRegistro]
+	Reg24 [label=Registro]
+	oR24 -> Reg24
+	N24 [label="{"]
+	Reg24 -> N24
+	V25 [label=Valor]
+	Reg24 -> V25
+	vs14 [label=1]
+	V25 -> vs14
+	OV25 [label="Otro Valor"]
+	Reg24 -> OV25
+	vs15 [label=3]
+	V25 -> vs15
+	N25 [label="}"]
+	Reg24 -> N25
+	oR24 -> oR26
+	oR26 [label=OtroRegistro]
+	Reg26 [label=Registro]
+	oR26 -> Reg26
+	N26 [label="{"]
+	Reg26 -> N26
+	V27 [label=Valor]
+	Reg26 -> V27
+	vs16 [label=5]
+	V27 -> vs16
+	OV27 [label="Otro Valor"]
+	Reg26 -> OV27
+	vs17 [label=3]
+	V27 -> vs17
+	N27 [label="}"]
+	Reg26 -> N27
+	oR26 -> oR28
+	oR28 [label=OtroRegistro]
+	Reg28 [label=Registro]
+	oR28 -> Reg28
+	N28 [label="{"]
+	Reg28 -> N28
+	V29 [label=Valor]
+	Reg28 -> V29
+	vs18 [label=7]
+	V29 -> vs18
+	OV29 [label="Otro Valor"]
+	Reg28 -> OV29
+	vs19 [label=5]
+	V29 -> vs19
+	N29 [label="}"]
+	Reg28 -> N29
+	oR28 -> oR30
+	oR30 [label=OtroRegistro]
+	Reg30 [label=Registro]
+	oR30 -> Reg30
+	N30 [label="{"]
+	Reg30 -> N30
+	V31 [label=Valor]
+	Reg30 -> V31
+	vs20 [label=6]
+	V31 -> vs20
+	OV31 [label="Otro Valor"]
+	Reg30 -> OV31
+	vs21 [label=55]
+	V31 -> vs21
+	N31 [label="}"]
+	Reg30 -> N31
+	oR30 -> oR32
+	oR32 [label=OtroRegistro]
+	Reg32 [label=Registro]
+	oR32 -> Reg32
+	N32 [label="{"]
+	Reg32 -> N32
+	V33 [label=Valor]
+	Reg32 -> V33
+	vs22 [label=14]
+	V33 -> vs22
+	OV33 [label="Otro Valor"]
+	Reg32 -> OV33
+	vs23 [label=3]
+	V33 -> vs23
+	N33 [label="}"]
+	Reg32 -> N33
+	oR32 -> oR34
+	oR34 [label=OtroRegistro]
+	Reg34 [label=Registro]
+	oR34 -> Reg34
+	N34 [label="{"]
+	Reg34 -> N34
+	V35 [label=Valor]
+	Reg34 -> V35
+	vs24 [label=13]
+	V35 -> vs24
+	OV35 [label="Otro Valor"]
+	Reg34 -> OV35
+	vs25 [label=3]
+	V35 -> vs25
+	N35 [label="}"]
+	Reg34 -> N35
+	oR34 -> oR36
+	oR36 [label=OtroRegistro]
+	Reg36 [label=Registro]
+	oR36 -> Reg36
+	N36 [label="{"]
+	Reg36 -> N36
+	V37 [label=Valor]
+	Reg36 -> V37
+	vs26 [label=12]
+	V37 -> vs26
+	OV37 [label="Otro Valor"]
+	Reg36 -> OV37
+	vs27 [label=3]
+	V37 -> vs27
+	N37 [label="}"]
+	Reg36 -> N37
+	oR36 -> oR38
+	oR38 [label=OtroRegistro]
+	Reg38 [label=Registro]
+	oR38 -> Reg38
+	N38 [label="{"]
+	Reg38 -> N38
+	V39 [label=Valor]
+	Reg38 -> V39
+	vs28 [label=15]
+	V39 -> vs28
+	OV39 [label="Otro Valor"]
+	Reg38 -> OV39
+	vs29 [label=3]
+	V39 -> vs29
+	N39 [label="}"]
+	Reg38 -> N39
+	oR38 -> oR40
+	oR40 [label=OtroRegistro]
+	va40 [label="ε"]
+	oR40 -> va40
+	N40 [label="]"]
+	C -> N40
 	A -> D
 	F0 [label=Funcion]
 	D -> F0
@@ -204,11 +382,11 @@ digraph {
 	Fu7 -> t6
 	S6 [label="("]
 	Fu7 -> S6
-	Sr6 [label="\"stock\""]
+	Sr6 [label="\"\""]
 	Fu7 -> Sr6
 	S26 [label=","]
 	Fu7 -> S26
-	nn6 [label=7]
+	nn6 [label=3]
 	Fu7 -> nn6
 	S56 [label=")"]
 	Fu7 -> S56
@@ -244,52 +422,4 @@ digraph {
 	Fu9 -> Ssd28
 	Ssdd28 [label=";"]
 	Fu9 -> Ssdd28
-	F10 [label=Funcion]
-	oF9 [label=OtraFuncion]
-	oF8 -> oF9
-	oF9 -> F10
-	Fu10 [label=max]
-	F9 -> Fu10
-	t9 [label=max]
-	Fu10 -> t9
-	Ss29 [label="("]
-	Fu10 -> Ss29
-	Ssss29 [label="\"precio_venta\""]
-	Fu10 -> Ssss29
-	ddSs29 [label=")"]
-	Fu10 -> ddSs29
-	Ssddddd29 [label=";"]
-	Fu10 -> Ssddddd29
-	F11 [label=Funcion]
-	oF10 [label=OtraFuncion]
-	oF9 -> oF10
-	oF10 -> F11
-	Fu11 [label=min]
-	F10 -> Fu11
-	t10 [label=min]
-	Fu11 -> t10
-	Ss210 [label="("]
-	Fu11 -> Ss210
-	Stt210 [label="\"precio_compra\""]
-	Fu11 -> Stt210
-	Ss2ddd10 [label=")"]
-	Fu11 -> Ss2ddd10
-	Ssssssss210 [label=";"]
-	Fu11 -> Ssssssss210
-	F12 [label=Funcion]
-	oF11 [label=OtraFuncion]
-	oF10 -> oF11
-	oF11 -> F12
-	Fu12 [label=exportarReporte]
-	F11 -> Fu12
-	t11 [label=exportarReporte]
-	Fu12 -> t11
-	S2s211 [label="("]
-	Fu12 -> S2s211
-	S3s211 [label="\"Reporte HTML de abarroterÃ­a\""]
-	Fu12 -> S3s211
-	S4s211 [label=")"]
-	Fu12 -> S4s211
-	S5s211 [label=";"]
-	Fu12 -> S5s211
 }
